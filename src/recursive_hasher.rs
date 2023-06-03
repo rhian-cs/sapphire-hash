@@ -1,25 +1,71 @@
-use std::{fs, path::Path};
+use std::{
+    fs::{self, DirEntry},
+    io,
+    path::Path,
+};
+
+use tokio::task::{JoinError, JoinSet};
 
 use crate::file_hasher;
 
-pub fn process(path: &str) {
-    if Path::new(path).is_dir() {
-        calculate_hash_for_directory(&path);
-    } else {
-        calculate_hash_for_file(&path);
+struct RecursiveHasher {
+    join_set: JoinSet<Result<(), JoinError>>,
+}
+
+impl RecursiveHasher {
+    fn process_path(&mut self, path: &str) -> Result<(), io::Error> {
+        let is_directory = Path::new(path).is_dir();
+
+        if is_directory {
+            self.process_directory_files(path)?;
+        } else {
+            self.process_file(path);
+        }
+
+        Ok(())
+    }
+
+    fn process_directory_files(&mut self, parent_path: &str) -> Result<(), io::Error> {
+        let child_paths = fs::read_dir(&parent_path)?;
+
+        for child_path in child_paths {
+            match child_path {
+                Ok(child_path) => self.process_path(&parse_path_dir_entry(child_path))?,
+                Err(err) => println!("{parent_path}\tError: {err}"),
+            }
+        }
+
+        Ok(())
+    }
+
+    fn process_file(&mut self, path: &str) {
+        let path = path.to_owned().clone();
+
+        let handle = tokio::spawn(async move {
+            let result = file_hasher::calculate(&path);
+
+            match result {
+                Ok(hex) => println!("{path}\tHash: {hex}"),
+                Err(err) => println!("{path}\tError: {err}"),
+            }
+        });
+
+        self.join_set.spawn(handle);
     }
 }
 
-fn calculate_hash_for_directory(path: &str) {
-    let paths = fs::read_dir(&path).unwrap();
+fn parse_path_dir_entry(path: DirEntry) -> String {
+    let path = path.path();
 
-    for path in paths {
-        process(&path.unwrap().path().to_str().unwrap());
-    }
+    path.to_str().unwrap().to_owned()
 }
 
-fn calculate_hash_for_file(path: &str) {
-    let hex = file_hasher::calculate(&path).unwrap();
+pub async fn process(path: &str) -> Result<(), io::Error> {
+    let mut recursive_hasher = RecursiveHasher {
+        join_set: JoinSet::new(),
+    };
 
-    println!("{path}\t{hex}");
+    recursive_hasher.process_path(path)?;
+
+    Ok(())
 }

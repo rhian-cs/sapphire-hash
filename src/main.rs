@@ -1,7 +1,7 @@
 pub mod file_hasher;
 pub mod recursive_hasher;
 
-use std::path::Path;
+use std::{io, path::Path};
 
 use clap::Parser;
 
@@ -11,7 +11,8 @@ struct Args {
     directory: String,
 }
 
-fn main() {
+#[tokio::main(worker_threads = 10)]
+async fn main() -> Result<(), io::Error> {
     let args = Args::parse();
     let path = args.directory;
 
@@ -19,5 +20,7 @@ fn main() {
         panic!("Directory or file {path} does not exist!");
     }
 
-    recursive_hasher::process(&path);
+    recursive_hasher::process(&path).await?;
+
+    Ok(())
 }
