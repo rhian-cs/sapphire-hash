@@ -1,7 +1,9 @@
+pub mod file_hasher;
+pub mod recursive_hasher;
+
 use std::path::Path;
 
 use clap::Parser;
-use hash_calculator::recursive_hasher;
 
 #[derive(Parser)]
 struct Args {
