@@ -1,1 +1,2 @@
-pub mod file_hash_calculator;
+pub mod file_hasher;
+pub mod recursive_hasher;
