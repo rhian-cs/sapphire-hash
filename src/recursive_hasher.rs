@@ -6,13 +6,23 @@ use std::{
 
 use tokio::task::{JoinError, JoinSet};
 
-use crate::file_hasher;
+use crate::file_hasher::FileHasher;
 
-struct RecursiveHasher {
+pub struct RecursiveHasher {
     join_set: JoinSet<Result<(), JoinError>>,
 }
 
 impl RecursiveHasher {
+    pub async fn process(path: &str) -> Result<(), io::Error> {
+        let mut recursive_hasher = RecursiveHasher {
+            join_set: JoinSet::new(),
+        };
+
+        recursive_hasher.process_path(path)?;
+
+        Ok(())
+    }
+
     fn process_path(&mut self, path: &str) -> Result<(), io::Error> {
         let is_directory = Path::new(path).is_dir();
 
@@ -42,7 +52,7 @@ impl RecursiveHasher {
         let path = path.to_owned().clone();
 
         let handle = tokio::spawn(async move {
-            let result = file_hasher::calculate(&path);
+            let result = FileHasher::calculate(&path);
 
             match result {
                 Ok(hex) => println!("{path}\tHash: {hex}"),
@@ -58,14 +68,4 @@ fn parse_path_dir_entry(path: DirEntry) -> String {
     let path = path.path();
 
     path.to_str().unwrap().to_owned()
-}
-
-pub async fn process(path: &str) -> Result<(), io::Error> {
-    let mut recursive_hasher = RecursiveHasher {
-        join_set: JoinSet::new(),
-    };
-
-    recursive_hasher.process_path(path)?;
-
-    Ok(())
 }

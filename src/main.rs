@@ -4,6 +4,7 @@ pub mod recursive_hasher;
 use std::{io, path::Path};
 
 use clap::Parser;
+use recursive_hasher::RecursiveHasher;
 
 #[derive(Parser)]
 struct Args {
@@ -20,7 +21,7 @@ async fn main() -> Result<(), io::Error> {
         panic!("Directory or file {path} does not exist!");
     }
 
-    recursive_hasher::process(&path).await?;
+    RecursiveHasher::process(&path).await?;
 
     Ok(())
 }

@@ -7,19 +7,21 @@ use crypto::{digest::Digest, sha1::Sha1};
 
 const READ_BUFFER_SIZE: usize = 8192;
 
-struct FileHasher {
+pub struct FileHasher {
     buf_reader: BufReader<File>,
     hasher: Sha1,
 }
 
 impl FileHasher {
-    fn build(filename: &str) -> Result<Self, io::Error> {
+    pub fn calculate(filename: &str) -> Result<String, io::Error> {
         let file = File::open(filename)?;
 
-        Ok(FileHasher {
+        let mut file_hasher = FileHasher {
             buf_reader: BufReader::new(file),
             hasher: Sha1::new(),
-        })
+        };
+
+        Ok(file_hasher.calculate_digest()?)
     }
 
     fn calculate_digest(&mut self) -> Result<String, io::Error> {
@@ -46,10 +48,4 @@ impl FileHasher {
 
         Ok(())
     }
-}
-
-pub fn calculate(filename: &str) -> Result<String, io::Error> {
-    let mut calculator = FileHasher::build(&filename)?;
-
-    Ok(calculator.calculate_digest()?)
 }
