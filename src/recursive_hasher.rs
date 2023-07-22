@@ -6,16 +6,18 @@ use std::{
 
 use tokio::task::{JoinError, JoinSet};
 
-use crate::file_hasher::FileHasher;
+use crate::{file_hasher::FileHasher, hash_strategy::HashStrategy};
 
 pub struct RecursiveHasher {
     join_set: JoinSet<Result<(), JoinError>>,
+    hash_strategy: HashStrategy,
 }
 
 impl RecursiveHasher {
     pub async fn process(path: &str) -> Result<(), io::Error> {
         let mut recursive_hasher = RecursiveHasher {
             join_set: JoinSet::new(),
+            hash_strategy: HashStrategy::Sha1,
         };
 
         recursive_hasher.process_path(path)?;
@@ -50,9 +52,10 @@ impl RecursiveHasher {
 
     fn process_file(&mut self, path: &str) {
         let path = path.to_owned().clone();
+        let hash_strategy = self.hash_strategy.clone();
 
         let handle = tokio::spawn(async move {
-            let result = FileHasher::calculate(&path);
+            let result = FileHasher::calculate(&path, hash_strategy);
 
             match result {
                 Ok(hex) => println!("{path}\tHash: {hex}"),

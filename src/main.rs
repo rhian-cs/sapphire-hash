@@ -1,5 +1,7 @@
-pub mod file_hasher;
-pub mod recursive_hasher;
+mod file_hasher;
+mod hash_strategy;
+mod hasher_strategies;
+mod recursive_hasher;
 
 use std::{io, path::Path};
 

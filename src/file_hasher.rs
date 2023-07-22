@@ -3,22 +3,24 @@ use std::{
     io::{self, BufReader, Read},
 };
 
-use crypto::{digest::Digest, sha1::Sha1};
+use crypto::digest::Digest;
+
+use crate::hash_strategy::HashStrategy;
 
 const READ_BUFFER_SIZE: usize = 8192;
 
 pub struct FileHasher {
     buf_reader: BufReader<File>,
-    hasher: Sha1,
+    hasher: Box<dyn Digest>,
 }
 
 impl FileHasher {
-    pub fn calculate(filename: &str) -> Result<String, io::Error> {
+    pub fn calculate(filename: &str, hash_strategy: HashStrategy) -> Result<String, io::Error> {
         let file = File::open(filename)?;
 
         let mut file_hasher = FileHasher {
             buf_reader: BufReader::new(file),
-            hasher: Sha1::new(),
+            hasher: HashStrategy::hasher_for(hash_strategy),
         };
 
         Ok(file_hasher.calculate_digest()?)
