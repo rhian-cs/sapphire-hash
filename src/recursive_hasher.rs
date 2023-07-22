@@ -14,10 +14,10 @@ pub struct RecursiveHasher {
 }
 
 impl RecursiveHasher {
-    pub async fn process(path: &str) -> Result<(), io::Error> {
+    pub async fn process(path: &str, hash_strategy: HashStrategy) -> Result<(), io::Error> {
         let mut recursive_hasher = RecursiveHasher {
             join_set: JoinSet::new(),
-            hash_strategy: HashStrategy::Sha1,
+            hash_strategy: hash_strategy,
         };
 
         recursive_hasher.process_path(path)?;
