@@ -1,29 +1,19 @@
+mod argument_parser;
 mod file_hasher;
 mod hash_strategy;
 mod hasher_strategies;
 mod recursive_hasher;
 
-use std::{io, path::Path};
+use std::io;
 
-use clap::Parser;
+use argument_parser::{parse_cli_arguments, AppArgs};
 use recursive_hasher::RecursiveHasher;
-
-#[derive(Parser)]
-struct Args {
-    #[arg()]
-    directory: String,
-}
 
 #[tokio::main(worker_threads = 10)]
 async fn main() -> Result<(), io::Error> {
-    let args = Args::parse();
-    let path = args.directory;
+    let args: AppArgs = parse_cli_arguments();
 
-    if !Path::new(&path).try_exists().unwrap() {
-        panic!("Directory or file {path} does not exist!");
-    }
-
-    RecursiveHasher::process(&path).await?;
+    RecursiveHasher::process(&args.path, args.hash_strategy).await?;
 
     Ok(())
 }
