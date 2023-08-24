@@ -1,7 +1,6 @@
 mod argument_parser;
 mod file_hasher;
 mod hash_strategy;
-mod hasher_strategies;
 mod recursive_hasher;
 
 use std::io;
