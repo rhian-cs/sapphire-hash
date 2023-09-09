@@ -8,7 +8,22 @@ Clone the repository.
 
 Run `cargo build`.
 
-If you get this error:
+Use the app like so:
+
+```sh
+# ALGORITHM can be either `sha1` or `sha256`.
+./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
+```
+
+## Creating Files for Testing
+
+Use the script for creating random files: `scripts/generate_example_files.sh`
+
+Check the script code for available options.
+
+## Troubleshooting
+
+If you get this error when running `cargo build`:
 
 ```console
 /usr/bin/ld: cannot find Scrt1.o: No such file or directory
@@ -20,16 +35,3 @@ Run on Ubuntu ([source](https://stackoverflow.com/questions/6329887/how-to-fix-l
 ```sh
 sudo apt install gcc-multilib
 ```
-
-Use the app like so:
-
-```sh
-./target/debug/hash-calculator --algorithm ALGORITHM DIRECTORY
-# ALGORITHM can be either `sha1` or `sha256`.
-```
-
-## Random Files for Testing
-
-Use the script for creating random files: `scripts/generate_example_files.sh`
-
-Check the script code for available options.
