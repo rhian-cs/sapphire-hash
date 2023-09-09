@@ -15,6 +15,16 @@ Use the app like so:
 ./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
 ```
 
+## Building for Production
+
+Run `cargo build --release`.
+
+Use the app like so:
+
+```sh
+./target/release/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
+```
+
 ## Creating Files for Testing
 
 Use the script for creating random files: `scripts/generate_example_files.sh`
