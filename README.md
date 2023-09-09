@@ -10,6 +10,17 @@ Clone the repository.
 
 Run `cargo build`.
 
+If you get this error:
+```console
+/usr/bin/ld: cannot find Scrt1.o: No such file or directory
+/usr/bin/ld: cannot find crti.o: No such file or directory
+```
+
+Run on Ubuntu ([source](https://stackoverflow.com/questions/6329887/how-to-fix-linker-error-cannot-find-crt1-o)):
+```sh
+sudo apt install gcc-multilib
+```
+
 Use the app like so:
 
 ```sh
