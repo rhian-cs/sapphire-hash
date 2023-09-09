@@ -21,6 +21,7 @@ impl RecursiveHasher {
         };
 
         recursive_hasher.process_path(path)?;
+        recursive_hasher.wait_for_completion().await;
 
         Ok(())
     }
@@ -64,6 +65,10 @@ impl RecursiveHasher {
         });
 
         self.join_set.spawn(handle);
+    }
+
+    async fn wait_for_completion(&mut self) {
+        while let Some(_) = self.join_set.join_next().await {}
     }
 }
 

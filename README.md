@@ -2,8 +2,6 @@
 
 A recursive, performant hash calculator written in Rust!
 
-WARNING: This version still contains critical bugs, don't use it for real just yet :)
-
 ## Setup
 
 Clone the repository.
