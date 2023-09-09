@@ -20,14 +20,14 @@ impl RecursiveHasher {
             hash_strategy: hash_strategy,
         };
 
-        recursive_hasher.process_path(path)?;
+        recursive_hasher.process_path(path.to_owned().clone())?;
         recursive_hasher.wait_for_completion().await;
 
         Ok(())
     }
 
-    fn process_path(&mut self, path: &str) -> Result<(), io::Error> {
-        let is_directory = Path::new(path).is_dir();
+    fn process_path(&mut self, path: String) -> Result<(), io::Error> {
+        let is_directory = Path::new(&path).is_dir();
 
         if is_directory {
             self.process_directory_files(path)?;
@@ -38,12 +38,12 @@ impl RecursiveHasher {
         Ok(())
     }
 
-    fn process_directory_files(&mut self, parent_path: &str) -> Result<(), io::Error> {
+    fn process_directory_files(&mut self, parent_path: String) -> Result<(), io::Error> {
         let child_paths = fs::read_dir(&parent_path)?;
 
         for child_path in child_paths {
             match child_path {
-                Ok(child_path) => self.process_path(&parse_path_dir_entry(child_path))?,
+                Ok(child_path) => self.process_path(parse_path_dir_entry(child_path))?,
                 Err(err) => println!("{parent_path}\tError: {err}"),
             }
         }
@@ -51,8 +51,7 @@ impl RecursiveHasher {
         Ok(())
     }
 
-    fn process_file(&mut self, path: &str) {
-        let path = path.to_owned().clone();
+    fn process_file(&mut self, path: String) {
         let hash_strategy = self.hash_strategy.clone();
 
         let handle = tokio::spawn(async move {
