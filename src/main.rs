@@ -12,7 +12,7 @@ use recursive_hasher::RecursiveHasher;
 async fn main() -> Result<(), io::Error> {
     let args: AppArgs = parse_cli_arguments();
 
-    RecursiveHasher::process(&args.path, args.hash_strategy).await?;
+    RecursiveHasher::process(args.path, args.hash_strategy).await?;
 
     Ok(())
 }
