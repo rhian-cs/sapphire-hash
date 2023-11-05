@@ -1,6 +1,8 @@
 use std::collections::BTreeMap;
 use std::sync::mpsc;
 
+use spinoff::{spinners, Spinner};
+
 use self::report_entry::ReportEntry;
 use self::report_message::ReportMessage;
 
@@ -26,13 +28,16 @@ impl Reporter {
     }
 
     fn receive_entries(&mut self) {
+        let mut spinner = create_spinner("Now processing files...");
+        let mut counter = 0;
+
         for entry in self.receiver.iter() {
             match entry {
                 ReportMessage::Message(entry) => {
                     let path = entry.path.clone();
 
-                    if !self.entries.contains_key(&path) {
-                        // eprintln!("{}", entry.format_text());
+                    if !entry.is_directory {
+                        counter += 1;
                     }
 
                     self.entries.insert(path, entry);
@@ -40,6 +45,8 @@ impl Reporter {
                 ReportMessage::EndTransmission => break,
             }
         }
+
+        spinner.stop_with_message(&format!("{counter} files have been processed!"));
     }
 
     fn output_report(&self) {
@@ -47,4 +54,8 @@ impl Reporter {
             println!("{}", entry.format_text());
         }
     }
+}
+
+fn create_spinner(message: &'static str) -> Spinner {
+    Spinner::new_with_stream(spinners::Dots, message, None, spinoff::Streams::Stderr)
 }

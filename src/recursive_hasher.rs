@@ -36,8 +36,6 @@ impl RecursiveHasher {
     }
 
     pub async fn process(path: String, hash_strategy: HashStrategy) -> Result<(), io::Error> {
-        eprintln!("Processing path...");
-
         let (report_sender, report_receiver) = mpsc::channel();
 
         let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
