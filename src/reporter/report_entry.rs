@@ -17,7 +17,7 @@ impl ReportEntry {
     pub fn format_text(&self) -> String {
         match &self.result {
             ResultType::File(Ok(hash)) => format!("{}\tHash: {}", self.path, hash),
-            ResultType::Directory(Ok(())) => format!("{}", self.path),
+            ResultType::Directory(Ok(())) => self.path.clone(),
             ResultType::File(Err(err)) | ResultType::Directory(Err(err)) => {
                 format!("{}\tError: {}", self.path, err)
             }

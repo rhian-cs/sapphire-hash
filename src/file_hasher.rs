@@ -23,7 +23,7 @@ impl FileHasher {
             hasher: HashStrategy::hasher_for(hash_strategy),
         };
 
-        Ok(file_hasher.calculate_digest()?)
+        file_hasher.calculate_digest()
     }
 
     fn calculate_digest(&mut self) -> Result<String, io::Error> {

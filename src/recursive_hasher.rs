@@ -77,7 +77,7 @@ impl RecursiveHasher {
     fn process_directory_child_path(
         &mut self,
         sender: &mpsc::Sender<ReportMessage>,
-        parent_path: &String,
+        parent_path: &str,
         child_path: Result<DirEntry, io::Error>,
     ) -> Result<(), io::Error> {
         let result = match child_path {
@@ -90,7 +90,7 @@ impl RecursiveHasher {
         };
 
         let entry = ReportEntry {
-            path: parent_path.clone(),
+            path: parent_path.to_owned(),
             result,
             is_directory: true,
         };
@@ -101,7 +101,7 @@ impl RecursiveHasher {
     }
 
     fn process_file(&mut self, path: String) {
-        let hash_strategy = self.hash_strategy.clone();
+        let hash_strategy = self.hash_strategy;
         let sender = self.report_sender.clone();
 
         let handle = tokio::spawn(async move {
@@ -120,7 +120,7 @@ impl RecursiveHasher {
     }
 
     async fn wait_for_completion(&mut self) {
-        while let Some(_) = self.join_set.join_next().await {}
+        while (self.join_set.join_next().await).is_some() {}
 
         self.report_sender
             .send(ReportMessage::EndTransmission)
