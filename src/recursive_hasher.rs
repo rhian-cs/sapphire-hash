@@ -53,10 +53,18 @@ impl RecursiveHasher {
     fn process_path(&mut self, path_string: String) -> Result<(), io::Error> {
         let path = Path::new(&path_string);
 
-        if path.is_dir() {
-            self.process_directory(path_string)?;
-        } else {
-            self.process_file(path_string);
+        match path {
+            p if p.is_symlink() => {
+                publish_result(
+                    self.report_sender.clone(),
+                    ReportEntry {
+                        path: path_string,
+                        result: report_entry::ResultType::Symlink,
+                    },
+                );
+            }
+            p if p.is_dir() => self.process_directory(path_string)?,
+            _ => self.process_file(path_string),
         }
 
         Ok(())
