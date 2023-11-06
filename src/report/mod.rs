@@ -9,14 +9,14 @@ use self::report_message::ReportMessage;
 pub mod report_entry;
 pub mod report_message;
 
-pub struct Reporter {
+pub struct Report {
     entries: BTreeMap<String, ReportEntry>,
     receiver: mpsc::Receiver<ReportMessage>,
 }
 
-impl Reporter {
+impl Report {
     pub fn new(report_receiver: mpsc::Receiver<ReportMessage>) -> Self {
-        Reporter {
+        Report {
             entries: BTreeMap::new(),
             receiver: report_receiver,
         }

@@ -10,10 +10,10 @@ use tokio::task::{JoinError, JoinSet};
 use crate::{
     file_hasher::FileHasher,
     hash_strategy::HashStrategy,
-    reporter::{
+    report::{
         report_entry::{self, ReportEntry},
         report_message::ReportMessage,
-        Reporter,
+        Report,
     },
 };
 
@@ -39,7 +39,7 @@ impl RecursiveHasher {
         let (report_sender, report_receiver) = mpsc::channel();
 
         let reporter_handle = tokio::spawn(async {
-            Reporter::new(report_receiver).process_entries();
+            Report::new(report_receiver).process_entries();
         });
 
         let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
