@@ -38,12 +38,11 @@ impl RecursiveHasher {
     pub async fn process(path: String, hash_strategy: HashStrategy) -> Result<(), io::Error> {
         let (report_sender, report_receiver) = mpsc::channel();
 
-        let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
-
         let reporter_handle = tokio::spawn(async {
             Reporter::new(report_receiver).process_entries();
         });
 
+        let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
         recursive_hasher.process_path(path)?;
         recursive_hasher.wait_for_completion().await;
         reporter_handle.await?;
@@ -67,35 +66,17 @@ impl RecursiveHasher {
         let child_paths = fs::read_dir(&parent_path)?;
         let sender = self.report_sender.clone();
 
-        for child_path in child_paths {
-            self.process_directory_child_path(&sender, &parent_path, child_path)?;
-        }
-
-        Ok(())
-    }
-
-    fn process_directory_child_path(
-        &mut self,
-        sender: &mpsc::Sender<ReportMessage>,
-        parent_path: &str,
-        child_path: Result<DirEntry, io::Error>,
-    ) -> Result<(), io::Error> {
-        let result = match child_path {
-            Ok(child_path) => {
-                self.process_path(parse_path_dir_entry(child_path))?;
-
-                report_entry::ResultType::Directory(Ok(()))
-            }
-            Err(err) => report_entry::ResultType::Directory(Err(err)),
-        };
-
         let entry = ReportEntry {
             path: parent_path.to_owned(),
-            result,
+            result: report_entry::ResultType::Directory(Ok(())),
             is_directory: true,
         };
 
         sender.send(ReportMessage::Message(entry)).unwrap();
+
+        for child_path in child_paths {
+            self.process_path(parse_path_dir_entry(child_path?))?;
+        }
 
         Ok(())
     }
