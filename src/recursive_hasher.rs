@@ -64,14 +64,14 @@ impl RecursiveHasher {
 
     fn process_directory(&mut self, parent_path: String) -> Result<(), io::Error> {
         let child_paths = fs::read_dir(&parent_path)?;
-        let sender = self.report_sender.clone();
 
-        let entry = ReportEntry {
-            path: parent_path.to_owned(),
-            result: report_entry::ResultType::Directory(Ok(())),
-        };
-
-        sender.send(ReportMessage::Message(entry)).unwrap();
+        publish_result(
+            self.report_sender.clone(),
+            ReportEntry {
+                path: parent_path.to_owned(),
+                result: report_entry::ResultType::Directory(Ok(())),
+            },
+        );
 
         for child_path in child_paths {
             self.process_path(parse_path_dir_entry(child_path?))?;
@@ -87,12 +87,13 @@ impl RecursiveHasher {
         let handle = tokio::spawn(async move {
             let result = FileHasher::calculate(&path, hash_strategy);
 
-            let entry = ReportEntry {
-                path,
-                result: report_entry::ResultType::File(result),
-            };
-
-            sender.send(ReportMessage::Message(entry)).unwrap();
+            publish_result(
+                sender,
+                ReportEntry {
+                    path,
+                    result: report_entry::ResultType::File(result),
+                },
+            );
         });
 
         self.join_set.spawn(handle);
@@ -105,6 +106,10 @@ impl RecursiveHasher {
             .send(ReportMessage::EndTransmission)
             .unwrap();
     }
+}
+
+fn publish_result(sender: mpsc::Sender<ReportMessage>, report_entry: ReportEntry) {
+    sender.send(ReportMessage::Message(report_entry)).unwrap();
 }
 
 fn parse_path_dir_entry(path: DirEntry) -> String {
