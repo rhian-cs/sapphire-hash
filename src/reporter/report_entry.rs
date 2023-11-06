@@ -10,7 +10,6 @@ pub enum ResultType {
 pub struct ReportEntry {
     pub path: String,
     pub result: ResultType,
-    pub is_directory: bool,
 }
 
 impl ReportEntry {
@@ -22,5 +21,9 @@ impl ReportEntry {
                 format!("{}\tError: {}", self.path, err)
             }
         }
+    }
+
+    pub fn is_file(&self) -> bool {
+        matches!(self.result, ResultType::File(_))
     }
 }

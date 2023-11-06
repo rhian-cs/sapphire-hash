@@ -36,7 +36,7 @@ impl Reporter {
                 ReportMessage::Message(entry) => {
                     let path = entry.path.clone();
 
-                    if !entry.is_directory {
+                    if entry.is_file() {
                         counter += 1;
                     }
 

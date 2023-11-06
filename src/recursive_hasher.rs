@@ -50,26 +50,25 @@ impl RecursiveHasher {
         Ok(())
     }
 
-    fn process_path(&mut self, path: String) -> Result<(), io::Error> {
-        let is_directory = Path::new(&path).is_dir();
+    fn process_path(&mut self, path_string: String) -> Result<(), io::Error> {
+        let path = Path::new(&path_string);
 
-        if is_directory {
-            self.process_directory_files(path)?;
+        if path.is_dir() {
+            self.process_directory(path_string)?;
         } else {
-            self.process_file(path);
+            self.process_file(path_string);
         }
 
         Ok(())
     }
 
-    fn process_directory_files(&mut self, parent_path: String) -> Result<(), io::Error> {
+    fn process_directory(&mut self, parent_path: String) -> Result<(), io::Error> {
         let child_paths = fs::read_dir(&parent_path)?;
         let sender = self.report_sender.clone();
 
         let entry = ReportEntry {
             path: parent_path.to_owned(),
             result: report_entry::ResultType::Directory(Ok(())),
-            is_directory: true,
         };
 
         sender.send(ReportMessage::Message(entry)).unwrap();
@@ -91,7 +90,6 @@ impl RecursiveHasher {
             let entry = ReportEntry {
                 path,
                 result: report_entry::ResultType::File(result),
-                is_directory: false,
             };
 
             sender.send(ReportMessage::Message(entry)).unwrap();
