@@ -5,6 +5,7 @@ use std::{
     sync::mpsc,
 };
 
+use log::debug;
 use tokio::task::{JoinError, JoinSet};
 
 use crate::{
@@ -44,7 +45,11 @@ impl RecursiveHasher {
 
         let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
         recursive_hasher.process_path(path)?;
+
+        debug!("Waiting for all hasher threads to complete.");
         recursive_hasher.wait_for_completion().await;
+
+        debug!("Waiting for reporter to complete.");
         reporter_handle.await?;
 
         Ok(())

@@ -15,6 +15,14 @@ Use the app like so:
 ./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
 ```
 
+You may also enable logging by using the `RUST_LOG=trace` environment variable.
+
+If you want to pipe the results and log results to separate files, you may use:
+
+```sh
+RUST_LOG=trace ./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
+```
+
 ## Building for Production
 
 Run `cargo build --release`.

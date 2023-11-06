@@ -1,6 +1,7 @@
 use std::collections::BTreeMap;
 use std::sync::mpsc;
 
+use log::debug;
 use spinoff::{spinners, Spinner};
 
 use self::report_entry::ReportEntry;
@@ -32,6 +33,8 @@ impl Report {
         let mut counter = 0;
 
         for entry in self.receiver.iter() {
+            debug!("Received entry {:?}.", entry);
+
             match entry {
                 ReportMessage::Message(entry) => {
                     let path = entry.path.clone();
@@ -50,6 +53,8 @@ impl Report {
     }
 
     fn output_report(&self) {
+        debug!("Outputting report.");
+
         for (_, entry) in self.entries.iter() {
             println!("{}", entry.format_text());
         }

@@ -4,6 +4,7 @@ use std::{
 };
 
 use crypto::digest::Digest;
+use log::debug;
 
 use crate::hash_strategy::HashStrategy;
 
@@ -16,6 +17,8 @@ pub struct FileHasher {
 
 impl FileHasher {
     pub fn calculate(filename: &str, hash_strategy: HashStrategy) -> Result<String, io::Error> {
+        debug!("Calculating hash for file {filename}.");
+
         let file = File::open(filename)?;
 
         let mut file_hasher = FileHasher {
