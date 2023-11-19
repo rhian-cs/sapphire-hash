@@ -69,7 +69,16 @@ impl RecursiveHasher {
                 );
             }
             p if p.is_dir() => self.process_directory(path_string)?,
-            _ => self.process_file(path_string),
+            p if p.is_file() => self.process_file(path_string),
+            _ => {
+                publish_result(
+                    self.report_sender.clone(),
+                    ReportEntry {
+                        path: path_string,
+                        result: report_entry::ResultType::SpecialFile,
+                    },
+                );
+            }
         }
 
         Ok(())
