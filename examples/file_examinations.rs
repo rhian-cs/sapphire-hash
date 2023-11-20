@@ -7,6 +7,7 @@ fn main() {
         "/inexistent",
         "tmp/random",
         "tmp/random/file_1",
+        "/opt/containerd",
     ];
 
     for path in paths {

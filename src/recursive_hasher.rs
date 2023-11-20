@@ -36,7 +36,7 @@ impl RecursiveHasher {
         }
     }
 
-    pub async fn process(path: String, hash_strategy: HashStrategy) -> Result<(), io::Error> {
+    pub async fn process(path: String, hash_strategy: HashStrategy) {
         let (report_sender, report_receiver) = mpsc::channel();
 
         let reporter_handle = tokio::spawn(async {
@@ -44,18 +44,16 @@ impl RecursiveHasher {
         });
 
         let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
-        recursive_hasher.process_path(path)?;
+        recursive_hasher.process_path(path);
 
         debug!("Waiting for all hasher threads to complete.");
         recursive_hasher.wait_for_completion().await;
 
         debug!("Waiting for reporter to complete.");
-        reporter_handle.await?;
-
-        Ok(())
+        reporter_handle.await.unwrap();
     }
 
-    fn process_path(&mut self, path_string: String) -> Result<(), io::Error> {
+    fn process_path(&mut self, path_string: String) {
         let path = Path::new(&path_string);
 
         match path {
@@ -68,7 +66,7 @@ impl RecursiveHasher {
                     },
                 );
             }
-            p if p.is_dir() => self.process_directory(path_string)?,
+            p if p.is_dir() => self.process_directory(path_string),
             p if p.is_file() => self.process_file(path_string),
             _ => {
                 publish_result(
@@ -80,23 +78,25 @@ impl RecursiveHasher {
                 );
             }
         }
-
-        Ok(())
     }
 
-    fn process_directory(&mut self, parent_path: String) -> Result<(), io::Error> {
-        let child_paths = fs::read_dir(&parent_path)?;
+    fn process_directory(&mut self, path: String) {
+        let result = self.process_directory_child_paths(&path);
 
         publish_result(
             self.report_sender.clone(),
             ReportEntry {
-                path: parent_path.to_owned(),
-                result: report_entry::ResultType::Directory(Ok(())),
+                path,
+                result: report_entry::ResultType::Directory(result),
             },
         );
+    }
 
-        for child_path in child_paths {
-            self.process_path(parse_path_dir_entry(child_path?))?;
+    fn process_directory_child_paths(&mut self, parent_path: &String) -> Result<(), io::Error> {
+        let child_paths = fs::read_dir(parent_path)?;
+
+        for child_path in child_paths.flatten() {
+            self.process_path(parse_path_dir_entry(child_path));
         }
 
         Ok(())
@@ -134,8 +134,10 @@ fn publish_result(sender: mpsc::Sender<ReportMessage>, report_entry: ReportEntry
     sender.send(ReportMessage::Message(report_entry)).unwrap();
 }
 
-fn parse_path_dir_entry(path: DirEntry) -> String {
-    let path = path.path();
-
-    path.to_str().unwrap().to_owned()
+fn parse_path_dir_entry(dir_entry: DirEntry) -> String {
+    dir_entry
+        .path()
+        .to_str()
+        .unwrap_or("<Invalid UTF-8 String>")
+        .to_owned()
 }
