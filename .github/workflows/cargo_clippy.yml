@@ -1,0 +1,20 @@
+# Source: https://doc.rust-lang.org/stable/clippy/continuous_integration/github_actions.html
+
+name: Cargo Clippy Linting
+
+on:
+  push:
+    branches: ["master"]
+  pull_request:
+
+# Make sure CI fails on all warnings, including Clippy lints
+env:
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+  cargo_clippy_linting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Clippy
+        run: cargo clippy --all-targets --all-features
