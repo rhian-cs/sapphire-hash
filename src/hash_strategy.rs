@@ -33,10 +33,7 @@ mod tests {
         assert_eq!(HashStrategy::strategy_for("SHA1"), Some(HashStrategy::Sha1));
         assert_eq!(HashStrategy::strategy_for("Sha1"), Some(HashStrategy::Sha1));
 
-        assert_eq!(
-            HashStrategy::strategy_for("sha256"),
-            Some(HashStrategy::Sha256)
-        );
+        assert_eq!(HashStrategy::strategy_for("sha256"), Some(HashStrategy::Sha256));
 
         assert_eq!(HashStrategy::strategy_for("invalid"), None);
     }
