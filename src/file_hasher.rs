@@ -54,3 +54,33 @@ impl FileHasher {
         Ok(())
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use crate::file_hasher::FileHasher;
+    use crate::hash_strategy::HashStrategy;
+
+    #[test]
+    fn test_calculate_with_valid_file() {
+        let result =
+            FileHasher::calculate("tests/fixtures/files/sample_file.txt", HashStrategy::Sha256);
+
+        let expected_hash = "315f5bdb76d078c43b8ac0064e4a0164612b1fce77c869345bfc94c75894edd3";
+
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), expected_hash.to_string());
+    }
+
+    #[test]
+    fn test_calculate_with_inexistent_file() {
+        let result = FileHasher::calculate(
+            "tests/fixtures/files/inexistent_000.txt",
+            HashStrategy::Sha256,
+        );
+
+        assert_eq!(
+            result.err().unwrap().to_string(),
+            "No such file or directory (os error 2)".to_string()
+        );
+    }
+}
