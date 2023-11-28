@@ -25,5 +25,5 @@ fn examine_path(path_string: &str) {
     println!("is_dir(): {}", path.is_dir());
     println!("is_file(): {}", path.is_file());
     println!("is_symlink(): {}", path.is_symlink());
-    println!("");
+    println!();
 }
