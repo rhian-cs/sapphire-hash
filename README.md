@@ -33,11 +33,27 @@ Use the app like so:
 ./target/release/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
 ```
 
-## Creating Files for Testing
+## Running Automated Tests
+
+Run:
+
+```sh
+cargo test
+```
+
+## Creating Files for Manual Testing
 
 Use the script for creating random files: `scripts/generate_example_files.sh`
 
 Check the script code for available options.
+
+## Linting
+
+Run:
+
+```sh
+RUSTFLAGS=-Dwarnings cargo clippy --all-targets --all-features
+```
 
 ## Troubleshooting
 
