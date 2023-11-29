@@ -14,11 +14,10 @@ pub async fn process(path: String, hash_strategy: HashStrategy) {
         Report::new(report_receiver).process_entries();
     });
 
-    let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
-    recursive_hasher.process_path_recursively(path);
-
-    debug!("Waiting for all hasher threads to complete.");
-    recursive_hasher.wait_for_completion().await;
+    RecursiveHasher::new(hash_strategy, report_sender)
+        .process(path)
+        .wait_for_completion()
+        .await;
 
     debug!("Waiting for reporter to complete.");
     reporter_handle.await.unwrap();

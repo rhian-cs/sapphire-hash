@@ -5,6 +5,7 @@ use std::{
     sync::mpsc,
 };
 
+use log::debug;
 use tokio::task::{JoinError, JoinSet};
 
 use crate::{
@@ -33,7 +34,12 @@ impl RecursiveHasher {
         }
     }
 
-    pub fn process_path_recursively(&mut self, path_string: String) {
+    pub fn process(mut self, path_string: String) -> Self {
+        self.process_path_recursively(path_string);
+        self
+    }
+
+    fn process_path_recursively(&mut self, path_string: String) {
         let path = Path::new(&path_string);
 
         let result_type = match path {
@@ -52,7 +58,7 @@ impl RecursiveHasher {
     }
 
     fn process_directory(&mut self, path: &String) -> ReportResultType {
-        let result = self.process_directory_children(&path);
+        let result = self.process_directory_children(path);
 
         ReportResultType::Directory(result)
     }
@@ -67,8 +73,8 @@ impl RecursiveHasher {
         Ok(())
     }
 
-    fn process_file(&mut self, path: &String) {
-        let path = path.clone();
+    fn process_file(&mut self, path: &str) {
+        let path = path.to_owned();
         let hash_strategy = self.hash_strategy;
         let sender = self.report_sender.clone();
 
@@ -82,6 +88,8 @@ impl RecursiveHasher {
     }
 
     pub async fn wait_for_completion(&mut self) {
+        debug!("Waiting for all hasher threads to complete.");
+
         while (self.join_set.join_next().await).is_some() {}
 
         self.report_sender.send(ReportMessage::EndTransmission).unwrap();
