@@ -5,7 +5,6 @@ use std::{
     sync::mpsc,
 };
 
-use log::debug;
 use tokio::task::{JoinError, JoinSet};
 
 use crate::{
@@ -14,9 +13,10 @@ use crate::{
     report::{
         report_entry::{self, ReportEntry},
         report_message::ReportMessage,
-        Report,
     },
 };
+
+type ReportResultType = report_entry::ResultType;
 
 pub struct RecursiveHasher {
     join_set: JoinSet<Result<(), JoinError>>,
@@ -25,10 +25,7 @@ pub struct RecursiveHasher {
 }
 
 impl RecursiveHasher {
-    fn new(
-        hash_strategy: HashStrategy,
-        report_sender: mpsc::Sender<ReportMessage>,
-    ) -> RecursiveHasher {
+    pub fn new(hash_strategy: HashStrategy, report_sender: mpsc::Sender<ReportMessage>) -> RecursiveHasher {
         RecursiveHasher {
             join_set: JoinSet::new(),
             hash_strategy,
@@ -36,34 +33,14 @@ impl RecursiveHasher {
         }
     }
 
-    pub async fn process(path: String, hash_strategy: HashStrategy) {
-        let (report_sender, report_receiver) = mpsc::channel();
-
-        let reporter_handle = tokio::spawn(async {
-            Report::new(report_receiver).process_entries();
-        });
-
-        let mut recursive_hasher = RecursiveHasher::new(hash_strategy, report_sender);
-        recursive_hasher.process_path(path);
-
-        debug!("Waiting for all hasher threads to complete.");
-        recursive_hasher.wait_for_completion().await;
-
-        debug!("Waiting for reporter to complete.");
-        reporter_handle.await.unwrap();
-    }
-
-    fn process_path(&mut self, path_string: String) {
+    pub fn process_path_recursively(&mut self, path_string: String) {
         let path = Path::new(&path_string);
 
         match path {
             p if p.is_symlink() => {
                 publish_result(
                     self.report_sender.clone(),
-                    ReportEntry {
-                        path: path_string,
-                        result: report_entry::ResultType::Symlink,
-                    },
+                    ReportEntry::new(path_string, ReportResultType::Symlink),
                 );
             }
             p if p.is_dir() => self.process_directory(path_string),
@@ -71,32 +48,26 @@ impl RecursiveHasher {
             _ => {
                 publish_result(
                     self.report_sender.clone(),
-                    ReportEntry {
-                        path: path_string,
-                        result: report_entry::ResultType::SpecialFile,
-                    },
+                    ReportEntry::new(path_string, ReportResultType::SpecialFile),
                 );
             }
         }
     }
 
     fn process_directory(&mut self, path: String) {
-        let result = self.process_directory_child_paths(&path);
+        let result = self.process_directory_children(&path);
 
         publish_result(
             self.report_sender.clone(),
-            ReportEntry {
-                path,
-                result: report_entry::ResultType::Directory(result),
-            },
+            ReportEntry::new(path, ReportResultType::Directory(result)),
         );
     }
 
-    fn process_directory_child_paths(&mut self, parent_path: &String) -> Result<(), io::Error> {
+    fn process_directory_children(&mut self, parent_path: &String) -> Result<(), io::Error> {
         let child_paths = fs::read_dir(parent_path)?;
 
         for child_path in child_paths.flatten() {
-            self.process_path(parse_path_dir_entry(child_path));
+            self.process_path_recursively(parse_path_dir_entry(child_path));
         }
 
         Ok(())
@@ -109,24 +80,16 @@ impl RecursiveHasher {
         let handle = tokio::spawn(async move {
             let result = FileHasher::calculate(&path, hash_strategy);
 
-            publish_result(
-                sender,
-                ReportEntry {
-                    path,
-                    result: report_entry::ResultType::File(result),
-                },
-            );
+            publish_result(sender, ReportEntry::new(path, ReportResultType::File(result)));
         });
 
         self.join_set.spawn(handle);
     }
 
-    async fn wait_for_completion(&mut self) {
+    pub async fn wait_for_completion(&mut self) {
         while (self.join_set.join_next().await).is_some() {}
 
-        self.report_sender
-            .send(ReportMessage::EndTransmission)
-            .unwrap();
+        self.report_sender.send(ReportMessage::EndTransmission).unwrap();
     }
 }
 
@@ -135,9 +98,5 @@ fn publish_result(sender: mpsc::Sender<ReportMessage>, report_entry: ReportEntry
 }
 
 fn parse_path_dir_entry(dir_entry: DirEntry) -> String {
-    dir_entry
-        .path()
-        .to_str()
-        .unwrap_or("<Invalid UTF-8 String>")
-        .to_owned()
+    dir_entry.path().to_str().unwrap_or("<Invalid UTF-8 String>").to_owned()
 }

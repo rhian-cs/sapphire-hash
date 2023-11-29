@@ -1,14 +1,13 @@
 mod argument_parser;
 mod file_hasher;
 mod hash_strategy;
-mod recursive_hasher;
+mod hasher;
 mod report;
 
 use std::time::Instant;
 
 use argument_parser::{parse_cli_arguments, AppArgs};
 use log::debug;
-use recursive_hasher::RecursiveHasher;
 
 #[tokio::main(worker_threads = 10)]
 async fn main() {
@@ -19,7 +18,7 @@ async fn main() {
 
     let args: AppArgs = parse_cli_arguments();
 
-    RecursiveHasher::process(args.path, args.hash_strategy).await;
+    hasher::process(args.path, args.hash_strategy).await;
 
     eprintln!("\nTook {} seconds.", start_time.elapsed().as_secs_f32());
 }

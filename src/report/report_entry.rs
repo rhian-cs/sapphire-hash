@@ -15,6 +15,10 @@ pub struct ReportEntry {
 }
 
 impl ReportEntry {
+    pub fn new(path: String, result: ResultType) -> Self {
+        Self { path, result }
+    }
+
     pub fn format_text(&self) -> String {
         match &self.result {
             ResultType::File(Ok(hash)) => format!("{}\tHash: {}", self.path, hash),
