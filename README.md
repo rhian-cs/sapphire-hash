@@ -2,7 +2,14 @@
 
 A recursive, performant hash calculator written in Rust!
 
-## Setup
+## Development
+
+### Dependencies
+
+- Rust
+- OpenSSL
+
+### Setup
 
 Clone the repository.
 
@@ -23,9 +30,13 @@ If you want to pipe the results and log results to separate files, you may use:
 RUST_LOG=trace ./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
 ```
 
-## Building for Production
+### Building for Production
 
-Run `cargo build --release`.
+Run:
+
+```sh
+OPENSSL_STATIC=true cargo build --release
+```
 
 Use the app like so:
 
@@ -33,7 +44,7 @@ Use the app like so:
 ./target/release/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
 ```
 
-## Running Automated Tests
+### Running Automated Tests
 
 Run:
 
@@ -41,13 +52,13 @@ Run:
 cargo test
 ```
 
-## Creating Files for Manual Testing
+### Creating Files for Manual Testing
 
 Use the script for creating random files: `scripts/generate_example_files.sh`
 
 Check the script code for available options.
 
-## Linting
+### Linting
 
 Run:
 
@@ -55,7 +66,7 @@ Run:
 RUSTFLAGS=-Dwarnings cargo clippy --all-targets --all-features
 ```
 
-## Troubleshooting
+### Troubleshooting
 
 If you get this error when running `cargo build`:
 

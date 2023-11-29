@@ -1,4 +1,6 @@
-use crypto::{digest::Digest, sha1::Sha1, sha2::Sha256};
+use openssl::error::ErrorStack as OpenSSLErrorStack;
+use openssl::hash::Hasher as OpenSSLHasher;
+use openssl::hash::MessageDigest;
 
 #[derive(Clone, Copy, PartialEq, Debug)]
 pub enum HashStrategy {
@@ -15,10 +17,10 @@ impl HashStrategy {
         }
     }
 
-    pub fn hasher_for(strategy: HashStrategy) -> Box<dyn Digest> {
+    pub fn hasher_for(strategy: HashStrategy) -> Result<OpenSSLHasher, OpenSSLErrorStack> {
         match strategy {
-            HashStrategy::Sha1 => Box::new(Sha1::new()),
-            HashStrategy::Sha256 => Box::new(Sha256::new()),
+            HashStrategy::Sha1 => OpenSSLHasher::new(MessageDigest::sha1()),
+            HashStrategy::Sha256 => OpenSSLHasher::new(MessageDigest::sha256()),
         }
     }
 }
