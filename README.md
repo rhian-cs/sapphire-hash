@@ -6,8 +6,8 @@ A recursive, performant hash calculator written in Rust!
 
 ### Dependencies
 
-- Rust
-- OpenSSL
+- Rust (https://rustup.rs/)
+- OpenSSL (For Ubuntu install the `libssl-dev` package)
 
 ### Setup
 
@@ -64,19 +64,4 @@ Run:
 
 ```sh
 RUSTFLAGS=-Dwarnings cargo clippy --all-targets --all-features
-```
-
-### Troubleshooting
-
-If you get this error when running `cargo build`:
-
-```console
-/usr/bin/ld: cannot find Scrt1.o: No such file or directory
-/usr/bin/ld: cannot find crti.o: No such file or directory
-```
-
-Run on Ubuntu ([source](https://stackoverflow.com/questions/6329887/how-to-fix-linker-error-cannot-find-crt1-o)):
-
-```sh
-sudo apt install gcc-multilib
 ```
