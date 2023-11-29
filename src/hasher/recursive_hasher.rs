@@ -36,31 +36,25 @@ impl RecursiveHasher {
     pub fn process_path_recursively(&mut self, path_string: String) {
         let path = Path::new(&path_string);
 
-        match path {
-            p if p.is_symlink() => {
-                publish_result(
-                    self.report_sender.clone(),
-                    ReportEntry::new(path_string, ReportResultType::Symlink),
-                );
+        let result_type = match path {
+            p if p.is_symlink() => Some(ReportResultType::Symlink),
+            p if p.is_dir() => Some(self.process_directory(&path_string)),
+            p if p.is_file() => {
+                self.process_file(&path_string);
+                None // file result report is published in a separate thread
             }
-            p if p.is_dir() => self.process_directory(path_string),
-            p if p.is_file() => self.process_file(path_string),
-            _ => {
-                publish_result(
-                    self.report_sender.clone(),
-                    ReportEntry::new(path_string, ReportResultType::SpecialFile),
-                );
-            }
+            _ => Some(ReportResultType::SpecialFile),
+        };
+
+        if let Some(result_type) = result_type {
+            publish_result_to_reporter(self.report_sender.clone(), ReportEntry::new(path_string, result_type));
         }
     }
 
-    fn process_directory(&mut self, path: String) {
+    fn process_directory(&mut self, path: &String) -> ReportResultType {
         let result = self.process_directory_children(&path);
 
-        publish_result(
-            self.report_sender.clone(),
-            ReportEntry::new(path, ReportResultType::Directory(result)),
-        );
+        ReportResultType::Directory(result)
     }
 
     fn process_directory_children(&mut self, parent_path: &String) -> Result<(), io::Error> {
@@ -73,14 +67,15 @@ impl RecursiveHasher {
         Ok(())
     }
 
-    fn process_file(&mut self, path: String) {
+    fn process_file(&mut self, path: &String) {
+        let path = path.clone();
         let hash_strategy = self.hash_strategy;
         let sender = self.report_sender.clone();
 
         let handle = tokio::spawn(async move {
             let result = FileHasher::calculate(&path, hash_strategy);
 
-            publish_result(sender, ReportEntry::new(path, ReportResultType::File(result)));
+            publish_result_to_reporter(sender, ReportEntry::new(path, ReportResultType::File(result)));
         });
 
         self.join_set.spawn(handle);
@@ -93,7 +88,7 @@ impl RecursiveHasher {
     }
 }
 
-fn publish_result(sender: mpsc::Sender<ReportMessage>, report_entry: ReportEntry) {
+fn publish_result_to_reporter(sender: mpsc::Sender<ReportMessage>, report_entry: ReportEntry) {
     sender.send(ReportMessage::Message(report_entry)).unwrap();
 }
 
