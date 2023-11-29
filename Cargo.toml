@@ -19,3 +19,4 @@ clap = { version = "^4", features = ["derive"] } # CLI Argument Parser
 spinoff = "0.8.0"                                # CLI Spinners
 env_logger = "0.10.0"                            # Logger with support for environment variables
 log = "0.4.20"                                   # Logger backbone
+thiserror = "1.0.50"                             # Custom Errors
