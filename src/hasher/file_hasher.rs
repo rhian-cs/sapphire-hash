@@ -59,8 +59,7 @@ impl FileHasher {
 
 #[cfg(test)]
 mod tests {
-    use crate::file_hasher::FileHasher;
-    use crate::hash_strategy::HashStrategy;
+    use crate::{hash_strategy::HashStrategy, hasher::file_hasher::FileHasher};
 
     #[test]
     fn test_calculate_with_sha256_with_valid_file() {

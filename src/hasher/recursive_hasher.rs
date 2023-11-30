@@ -9,13 +9,14 @@ use log::debug;
 use tokio::task::{JoinError, JoinSet};
 
 use crate::{
-    file_hasher::FileHasher,
     hash_strategy::HashStrategy,
     report::{
         report_entry::{self, ReportEntry},
         report_message::ReportMessage,
     },
 };
+
+use super::file_hasher::FileHasher;
 
 type ReportResultType = report_entry::ResultType;
 

@@ -4,6 +4,7 @@ use log::debug;
 
 use crate::{hash_strategy::HashStrategy, hasher::recursive_hasher::RecursiveHasher, report::Report};
 
+mod file_hasher;
 mod recursive_hasher;
 
 pub async fn process(path: String, hash_strategy: HashStrategy) {

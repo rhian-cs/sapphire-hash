@@ -1,5 +1,4 @@
 mod argument_parser;
-mod file_hasher;
 mod hash_strategy;
 mod hasher;
 mod report;
