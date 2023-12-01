@@ -23,7 +23,7 @@ impl FileHasher {
 
         let mut file_hasher = FileHasher {
             buf_reader: BufReader::new(file),
-            hasher: HashStrategy::hasher_for(hash_strategy)?,
+            hasher: hash_strategy.hasher()?,
         };
 
         file_hasher.calculate_digest()
