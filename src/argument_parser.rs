@@ -10,7 +10,7 @@ struct CliArgs {
     #[arg()]
     directory: String,
 
-    #[arg(short, long)]
+    #[arg(short, long, default_value = "sha256")]
     algorithm: String,
 }
 
