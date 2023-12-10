@@ -1,0 +1,18 @@
+[package]
+name = "recursive-hash-calculator-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+recursive-hash-calculator-core = { path = "../core" }
+
+## Async Runtime ##
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+clap = { version = "^4", features = ["derive"] }                    # CLI Argument Parser
+
+## Logging ##
+env_logger = "0.10.0" # Logger with support for environment variables
+log = "0.4.20"        # Logger backbone
+
+## Utilities ##
+thiserror = "1.0.50" # Custom Errors

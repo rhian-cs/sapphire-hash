@@ -1,12 +1,10 @@
 mod argument_parser;
-mod hash_strategy;
-mod hasher;
-mod report;
 
 use std::time::Instant;
 
 use argument_parser::{parse_cli_arguments, AppArgs, ArgumentError};
 use log::debug;
+use recursive_hash_calculator_core::hasher;
 
 #[tokio::main(worker_threads = 10)]
 async fn main() {

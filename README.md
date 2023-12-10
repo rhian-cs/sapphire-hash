@@ -19,7 +19,7 @@ Use the app like so:
 
 ```sh
 # ALGORITHM can be either `sha1` or `sha256`.
-./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
+./target/debug/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
 ```
 
 You may also enable logging by using the `RUST_LOG=trace` environment variable.
@@ -27,7 +27,7 @@ You may also enable logging by using the `RUST_LOG=trace` environment variable.
 If you want to pipe the results and log results to separate files, you may use:
 
 ```sh
-RUST_LOG=trace ./target/debug/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
+RUST_LOG=trace ./target/debug/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
 ```
 
 ### Building for Production
@@ -41,7 +41,7 @@ OPENSSL_STATIC=true cargo build --release
 Use the app like so:
 
 ```sh
-./target/release/recursive_hash_calculator --algorithm ALGORITHM DIRECTORY
+./target/release/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
 ```
 
 ### Running Automated Tests

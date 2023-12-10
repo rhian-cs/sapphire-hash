@@ -1,0 +1,23 @@
+[package]
+name = "recursive-hash-calculator-core"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+## Core ##
+openssl-sys = "0.9" # Automatically installs OpenSSL
+openssl = "0.10"    # Digest and other crypto-related functions
+hex = "0.4.3"       # Hexadecimal encoder/decoder
+
+## Async Runtime ##
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+
+## CLI and Logging ##
+spinoff = "0.8.0" # CLI Spinners
+log = "0.4.20"    # Logger backbone
+
+## Utilities ##
+thiserror = "1.0.50"                                # Custom Errors
+strum = { version = "0.25", features = ["derive"] } # Derive utilities for enums

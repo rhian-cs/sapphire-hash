@@ -2,7 +2,7 @@ use std::{io, path::Path};
 
 use clap::Parser;
 
-use crate::hash_strategy::HashStrategy;
+use recursive_hash_calculator_core::hash_strategy::HashStrategy;
 use thiserror::Error;
 
 #[derive(Parser)]
