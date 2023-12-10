@@ -19,18 +19,6 @@ impl ReportEntry {
         Self { path, result }
     }
 
-    pub fn format_text(&self) -> String {
-        match &self.result {
-            ResultType::File(Ok(hash)) => format!("{}\tHash: {}", self.path, hash),
-            ResultType::Directory(Ok(())) => self.path.clone(),
-            ResultType::Symlink => format!("{}\tSymlink", self.path),
-            ResultType::SpecialFile => format!("{}\tSpecial File", self.path),
-            ResultType::File(Err(err)) | ResultType::Directory(Err(err)) => {
-                format!("{}\tError: {}", self.path, err)
-            }
-        }
-    }
-
     pub fn is_file(&self) -> bool {
         matches!(self.result, ResultType::File(_))
     }
