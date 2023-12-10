@@ -30,7 +30,7 @@ impl Report {
         }
     }
 
-    pub fn process_entries(&mut self) {
+    pub fn process_entries(mut self) {
         self.receive_entries();
         self.output_report();
     }
@@ -59,10 +59,11 @@ impl Report {
         spinner.stop_with_message(&format!("{counter} files have been processed!"));
     }
 
-    fn output_report(&self) {
+    fn output_report(self) {
         debug!("Outputting report.");
 
-        self.report_output.generate(&self.entries);
+        // TODO: Treat errors properly
+        self.report_output.generate(self.entries).unwrap();
     }
 }
 

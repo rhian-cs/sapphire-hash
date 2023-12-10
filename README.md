@@ -2,6 +2,45 @@
 
 A recursive, performant hash calculator written in Rust!
 
+## Usage
+
+### Basic Usage
+
+Compile the app, and use:
+
+```sh
+recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
+```
+
+Where:
+
+- `DIRECTORY` can be either the relative or the full path to the desired directory or file
+- `ALGORITHM` is the desired hash algorithm. You may choose one of the following:
+  - `md5`
+  - `sha1`
+  - `sha224`
+  - `sha256`
+  - `sha384`
+  - `sha512`
+  - `sha3_224`
+  - `sha3_256`
+  - `sha3_384`
+  - `sha3_512`
+  - `shake128`
+  - `shake256`
+  - `ripemd160`
+  - `sm3`
+
+### Logging
+
+You may also enable logging by using the `RUST_LOG=trace` environment variable.
+
+If you want to pipe the results and log results to separate files, you may use:
+
+```sh
+RUST_LOG=trace recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
+```
+
 ## Development
 
 ### Dependencies
@@ -18,16 +57,7 @@ Run `cargo build`.
 Use the app like so:
 
 ```sh
-# ALGORITHM can be either `sha1` or `sha256`.
 ./target/debug/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
-```
-
-You may also enable logging by using the `RUST_LOG=trace` environment variable.
-
-If you want to pipe the results and log results to separate files, you may use:
-
-```sh
-RUST_LOG=trace ./target/debug/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
 ```
 
 ### Building for Production

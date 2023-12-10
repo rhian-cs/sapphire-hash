@@ -1,4 +1,4 @@
-use std::collections::BTreeMap;
+use std::{collections::BTreeMap, error::Error};
 
 use crate::report::report_entry::{ReportEntry, ResultType};
 
@@ -7,10 +7,12 @@ use super::ReportOutput;
 pub struct Stdout;
 
 impl ReportOutput for Stdout {
-    fn generate(&self, entries: &BTreeMap<String, ReportEntry>) {
+    fn generate(&self, entries: BTreeMap<String, ReportEntry>) -> Result<(), Box<dyn Error>> {
         for (_, entry) in entries.iter() {
             println!("{}", self.format_text(entry));
         }
+
+        Ok(())
     }
 }
 
