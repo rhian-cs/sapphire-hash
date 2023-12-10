@@ -14,11 +14,8 @@ hex = "0.4.3"       # Hexadecimal encoder/decoder
 ## Async Runtime ##
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
 
-## CLI and Logging ##
-spinoff = "0.8.0" # CLI Spinners
-log = "0.4.20"    # Logger backbone
-
 ## Utilities ##
+log = "0.4.20"                                      # Logger backbone
 thiserror = "1.0.50"                                # Custom Errors
 strum = { version = "0.25", features = ["derive"] } # Derive utilities for enums
 csv = "1.3.0"                                       # CSV Reporting

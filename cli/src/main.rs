@@ -1,10 +1,12 @@
 mod argument_parser;
+mod ui_message_handler;
 
-use std::time::Instant;
+use std::sync::mpsc;
 
 use argument_parser::{parse_cli_arguments, AppArgs, ArgumentError};
 use log::debug;
-use recursive_hash_calculator_core::hasher;
+use recursive_hash_calculator_core::{hasher, ui_message::UiMessage};
+use ui_message_handler::handle_messages;
 
 #[tokio::main(worker_threads = 10)]
 async fn main() {
@@ -17,13 +19,18 @@ async fn main() {
 }
 
 async fn run() -> Result<(), ArgumentError> {
-    let start_time = Instant::now();
+    let (ui_sender, ui_receiver) = mpsc::channel::<UiMessage>();
 
     let args: AppArgs = parse_cli_arguments()?;
+    let hasher_handle = tokio::spawn(hasher::process(
+        ui_sender,
+        args.path,
+        args.hash_strategy,
+        args.report_type,
+    ));
 
-    hasher::process(args.path, args.hash_strategy, args.report_type).await;
-
-    eprintln!("\nTook {} seconds.", start_time.elapsed().as_secs_f32());
+    handle_messages(ui_receiver);
+    hasher_handle.await.unwrap();
 
     Ok(())
 }

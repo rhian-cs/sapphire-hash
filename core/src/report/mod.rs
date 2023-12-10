@@ -2,9 +2,9 @@ use std::collections::BTreeMap;
 use std::sync::mpsc;
 
 use log::debug;
-use spinoff::{spinners, Spinner};
 
 use crate::report_type::ReportType;
+use crate::ui_message::UiMessage;
 
 use self::output::{report_output_for, ReportOutput};
 use self::report_entry::ReportEntry;
@@ -19,14 +19,20 @@ pub struct Report {
     entries: BTreeMap<String, ReportEntry>,
     receiver: mpsc::Receiver<ReportMessage>,
     report_output: Box<dyn ReportOutput>,
+    ui_sender: mpsc::Sender<UiMessage>,
 }
 
 impl Report {
-    pub fn new(report_receiver: mpsc::Receiver<ReportMessage>, report_type: ReportType) -> Self {
+    pub fn new(
+        ui_sender: mpsc::Sender<UiMessage>,
+        report_receiver: mpsc::Receiver<ReportMessage>,
+        report_type: ReportType,
+    ) -> Self {
         Report {
             entries: BTreeMap::new(),
             receiver: report_receiver,
             report_output: report_output_for(report_type),
+            ui_sender,
         }
     }
 
@@ -36,8 +42,7 @@ impl Report {
     }
 
     fn receive_entries(&mut self) {
-        let mut spinner = create_spinner("Now processing files...");
-        let mut counter = 0;
+        let mut count = 0;
 
         for entry in self.receiver.iter() {
             debug!("Received entry {:?}.", entry);
@@ -47,7 +52,7 @@ impl Report {
                     let path = entry.path.clone();
 
                     if entry.is_file() {
-                        counter += 1;
+                        count += 1;
                     }
 
                     self.entries.insert(path, entry);
@@ -56,7 +61,7 @@ impl Report {
             }
         }
 
-        spinner.stop_with_message(&format!("{counter} files have been processed!"));
+        self.ui_sender.send(UiMessage::ReporterFinish(count)).unwrap();
     }
 
     fn output_report(self) {
@@ -65,8 +70,4 @@ impl Report {
         // TODO: Treat errors properly
         self.report_output.generate(self.entries).unwrap();
     }
-}
-
-fn create_spinner(message: &'static str) -> Spinner {
-    Spinner::new_with_stream(spinners::Dots, message, None, spinoff::Streams::Stderr)
 }

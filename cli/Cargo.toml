@@ -16,3 +16,4 @@ log = "0.4.20"        # Logger backbone
 
 ## Utilities ##
 thiserror = "1.0.50" # Custom Errors
+spinoff = "0.8.0"    # CLI Spinners
