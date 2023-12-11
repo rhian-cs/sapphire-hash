@@ -9,6 +9,9 @@ mod file_dialog;
 mod report_path;
 mod result_formatter;
 
+const CALCULATE_BUTTON_IDLE_TEXT: &str = "Calculate";
+const CALCULATE_BUTTON_IN_PROGRESS_TEXT: &str = "Calculating...";
+
 #[tokio::main]
 async fn main() -> Result<(), slint::PlatformError> {
     let window = MainWindow::new()?;
@@ -47,7 +50,8 @@ async fn main() -> Result<(), slint::PlatformError> {
                 return;
             }
 
-            window.set_buttons_enabled(false);
+            window.set_is_processing(true);
+            window.set_calculate_button_text(CALCULATE_BUTTON_IN_PROGRESS_TEXT.into());
 
             tokio::spawn(calculate_hashes(
                 weak_window.clone(),
@@ -68,12 +72,13 @@ async fn calculate_hashes(
     output_path: String,
 ) {
     let result = hasher::process(input_path, hash_strategy, ReportType::Csv(output_path.clone())).await;
-    let info_message = result_formatter::format(&result, &output_path);
+    let formatted_result = result_formatter::format(&result, &output_path);
 
     window
         .upgrade_in_event_loop(move |window| {
-            window.set_buttons_enabled(true);
-            window.set_info_message(info_message.into());
+            window.set_is_processing(false);
+            window.set_calculate_button_text(CALCULATE_BUTTON_IDLE_TEXT.into());
+            window.set_info_message(formatted_result.into());
         })
         .unwrap();
 }

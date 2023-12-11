@@ -1,4 +1,4 @@
-import { Button, VerticalBox, StandardListView } from "std-widgets.slint";
+import { Button, VerticalBox, StandardListView , ProgressIndicator} from "std-widgets.slint";
 import { InfoText } from "components/info_text.slint";
 import { GridLabel } from "components/grid_label.slint";
 import { GridButton } from "components/grid_button.slint";
@@ -13,7 +13,8 @@ export component MainWindow inherits Window {
   in-out property <string> output-path;
   in-out property <string> hash-algorithm: "md5";
 
-  in-out property <bool> buttons-enabled: true;
+  in-out property <bool> is-processing;
+  in-out property <string> calculate-button-text: "Calculate";
 
   in-out property <string> info-message;
   in-out property <string> error-message;
@@ -32,7 +33,7 @@ export component MainWindow inherits Window {
       VerticalLayout {
         GridButton {
           text: "Open Directory";
-          enabled: root.buttons-enabled;
+          enabled: !root.is-processing;
           clicked => { root.input_path_button_clicked() }
         }
         if (input-path != "") : PathLabel {
@@ -49,7 +50,7 @@ export component MainWindow inherits Window {
       VerticalLayout {
         GridButton {
           text: "Open Directory";
-          enabled: root.buttons-enabled;
+          enabled: !root.is-processing;
           clicked => { root.output_path_button_clicked() }
         }
         if (output-path != "") : PathLabel {
@@ -68,6 +69,7 @@ export component MainWindow inherits Window {
         height: 100px;
 
         current-item: 0;
+
         model: [
           { text: "MD5" },
           { text: "RIPEMD160" },
@@ -100,12 +102,23 @@ export component MainWindow inherits Window {
       color: red;
     }
 
+    if (root.is-processing): HorizontalLayout {
+      alignment: center;
+      padding-bottom: 10px;
+
+      ProgressIndicator {
+        width: 340px;
+        height: 5px;
+        indeterminate: true;
+      }
+    }
+
     HorizontalLayout {
       alignment: center;
 
       Button {
-        text: "Calculate";
-        enabled: root.buttons-enabled;
+        text: root.calculate-button-text;
+        enabled: !root.is-processing;
         clicked => { root.calculate_button_clicked() }
         height: 48px;
         width: 340px;
