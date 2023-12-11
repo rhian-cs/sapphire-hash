@@ -1,4 +1,4 @@
-import { Button , ComboBox , VerticalBox} from "std-widgets.slint";
+import { Button, VerticalBox, StandardListView } from "std-widgets.slint";
 import { InfoText } from "components/info_text.slint";
 import { GridLabel } from "components/grid_label.slint";
 import { GridButton } from "components/grid_button.slint";
@@ -11,6 +11,7 @@ export component MainWindow inherits Window {
 
   in-out property <string> input-path;
   in-out property <string> output-path;
+  in-out property <string> hash-algorithm: "md5";
 
   in-out property <bool> buttons-enabled: true;
 
@@ -42,7 +43,7 @@ export component MainWindow inherits Window {
 
     HorizontalLayout {
       alignment: center;
-      padding-bottom: 20px;
+      padding-bottom: 10px;
 
       GridLabel { text: "Save CSV Output To"; }
       VerticalLayout {
@@ -53,6 +54,39 @@ export component MainWindow inherits Window {
         }
         if (output-path != "") : PathLabel {
           text: output-path;
+        }
+      }
+    }
+
+    HorizontalLayout {
+      alignment: center;
+      padding-bottom: 20px;
+
+      GridLabel { text: "Hash Algorithm"; }
+      StandardListView {
+        width: 170px;
+        height: 100px;
+
+        current-item: 0;
+        model: [
+          { text: "MD5" },
+          { text: "RIPEMD160" },
+          { text: "SHA1" },
+          { text: "SHA224" },
+          { text: "SHA256" },
+          { text: "SHA384" },
+          { text: "SHA512" },
+          { text: "SHA3_224" },
+          { text: "SHA3_256" },
+          { text: "SHA3_384" },
+          { text: "SHA3_512" },
+          { text: "SHAKE128" },
+          { text: "SHAKE256" },
+          { text: "SM3" },
+        ];
+
+        current-item-changed(index) => {
+          root.hash-algorithm = self.model[index].text;
         }
       }
     }

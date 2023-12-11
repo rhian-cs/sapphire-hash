@@ -1,3 +1,5 @@
+use std::str::FromStr;
+
 use recursive_hash_calculator_core::{hash_strategy::HashStrategy, hasher, report_type::ReportType};
 use report_path::report_output_path;
 
@@ -29,6 +31,9 @@ async fn main() -> Result<(), slint::PlatformError> {
             let input_path = window.get_input_path().to_string();
             let output_path = window.get_output_path().to_string();
 
+            let hash_algorithm = window.get_hash_algorithm().to_lowercase();
+            let hash_strategy = HashStrategy::from_str(&hash_algorithm).unwrap();
+
             window.set_error_message("".into());
             window.set_info_message("".into());
 
@@ -46,8 +51,9 @@ async fn main() -> Result<(), slint::PlatformError> {
 
             tokio::spawn(calculate_hashes(
                 weak_window.clone(),
+                hash_strategy,
                 input_path,
-                report_output_path(&output_path),
+                report_output_path(&output_path, hash_strategy),
             ));
         }
     });
@@ -55,8 +61,13 @@ async fn main() -> Result<(), slint::PlatformError> {
     window.run()
 }
 
-async fn calculate_hashes(window: slint::Weak<MainWindow>, input_path: String, output_path: String) {
-    let result = hasher::process(input_path, HashStrategy::Sha256, ReportType::Csv(output_path.clone())).await;
+async fn calculate_hashes(
+    window: slint::Weak<MainWindow>,
+    hash_strategy: HashStrategy,
+    input_path: String,
+    output_path: String,
+) {
+    let result = hasher::process(input_path, hash_strategy, ReportType::Csv(output_path.clone())).await;
     let info_message = result_formatter::format(&result, &output_path);
 
     window

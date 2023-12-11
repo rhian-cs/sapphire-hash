@@ -13,7 +13,9 @@ rfd = "0.12.1"  # Native file input component
 
 # Async Runtime
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
-chrono = "0.4.31"
+
+# Utilities
+chrono = "0.4.31" # Date and Time Operations
 
 [build-dependencies]
 slint-build = "1.0"
