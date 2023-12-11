@@ -12,12 +12,13 @@ component MyLabel inherits HorizontalLayout {
 }
 
 export component MainWindow {
-  preferred-width: 240px;
-  preferred-height: 360px;
-
   callback input_path_button_clicked();
   callback output_path_button_clicked();
   callback calculate_button_clicked();
+
+  in-out property <string> error-message;
+  in-out property <string> input-path;
+  in-out property <string> output-path;
 
   VerticalLayout {
     padding: 20px;
@@ -26,7 +27,7 @@ export component MainWindow {
       text: "Recursive Hash Calculator";
       horizontal-alignment: center;
       font-weight: 600;
-      font-size: 18px;
+      font-size: 16px;
       padding-bottom: 20px;
     }
 
@@ -36,7 +37,7 @@ export component MainWindow {
       Row {
         MyLabel { text: "Calculate Hashes For"; }
         Button {
-          text: "Open File or Directory";
+          text: "Open Directory";
           clicked => { root.input_path_button_clicked() }
         }
       }
@@ -48,6 +49,14 @@ export component MainWindow {
           clicked => { root.output_path_button_clicked() }
         }
       }
+    }
+
+    if (error-message != "") : Text {
+      text: error-message;
+      font-size: 14px;
+      color: red;
+      horizontal-alignment: center;
+      vertical-alignment: center;
     }
 
     Button {
