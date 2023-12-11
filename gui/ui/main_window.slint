@@ -19,6 +19,7 @@ export component MainWindow {
   in-out property <string> error-message;
   in-out property <string> input-path;
   in-out property <string> output-path;
+  in-out property <bool> buttons-enabled: true;
 
   VerticalLayout {
     padding: 20px;
@@ -38,6 +39,7 @@ export component MainWindow {
         MyLabel { text: "Calculate Hashes For"; }
         Button {
           text: "Open Directory";
+          enabled: root.buttons-enabled;
           clicked => { root.input_path_button_clicked() }
         }
       }
@@ -46,6 +48,7 @@ export component MainWindow {
         MyLabel { text: "Save CSV Output To"; }
         Button {
           text: "Open Directory";
+          enabled: root.buttons-enabled;
           clicked => { root.output_path_button_clicked() }
         }
       }
@@ -61,6 +64,7 @@ export component MainWindow {
 
     Button {
       text: "Calculate";
+      enabled: root.buttons-enabled;
       clicked => { root.calculate_button_clicked() }
     }
   }
