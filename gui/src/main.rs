@@ -17,13 +17,29 @@ async fn main() -> Result<(), slint::PlatformError> {
     let window = MainWindow::new()?;
 
     window.on_input_path_button_clicked({
-        let window = window.as_weak().unwrap();
-        move || window.set_input_path(file_dialog::open_directory_dialog().into())
+        let weak_window = window.as_weak();
+
+        move || {
+            let window = weak_window.clone();
+            tokio::spawn(async {
+                let path = file_dialog::open_directory_dialog().into();
+
+                slint::invoke_from_event_loop(move || window.unwrap().set_input_path(path)).unwrap();
+            });
+        }
     });
 
     window.on_output_path_button_clicked({
-        let window = window.as_weak().unwrap();
-        move || window.set_output_path(file_dialog::open_directory_dialog().into())
+        let weak_window = window.as_weak();
+
+        move || {
+            let window = weak_window.clone();
+            tokio::spawn(async {
+                let path = file_dialog::open_directory_dialog().into();
+
+                slint::invoke_from_event_loop(move || window.unwrap().set_output_path(path)).unwrap();
+            });
+        }
     });
 
     window.on_calculate_button_clicked({
