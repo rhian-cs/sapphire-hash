@@ -1,7 +1,8 @@
-import { Button , ComboBox } from "std-widgets.slint";
+import { Button , ComboBox , VerticalBox} from "std-widgets.slint";
 import { InfoText } from "components/info_text.slint";
 import { GridLabel } from "components/grid_label.slint";
 import { GridButton } from "components/grid_button.slint";
+import { PathLabel } from "components/path_label.slint";
 
 export component MainWindow inherits Window {
   callback input_path_button_clicked();
@@ -24,26 +25,36 @@ export component MainWindow inherits Window {
 
     HorizontalLayout {
       alignment: center;
+      padding-bottom: 10px;
 
       GridLabel { text: "Calculate Hashes For"; }
-      GridButton {
-        text: "Open Directory";
-        enabled: root.buttons-enabled;
-        clicked => { root.input_path_button_clicked() }
+      VerticalLayout {
+        GridButton {
+          text: "Open Directory";
+          enabled: root.buttons-enabled;
+          clicked => { root.input_path_button_clicked() }
+        }
+        if (input-path != "") : PathLabel {
+          text: input-path;
+        }
       }
     }
 
     HorizontalLayout {
       alignment: center;
+      padding-bottom: 20px;
 
       GridLabel { text: "Save CSV Output To"; }
-      GridButton {
-        text: "Open Directory";
-        enabled: root.buttons-enabled;
-        clicked => { root.output_path_button_clicked() }
+      VerticalLayout {
+        GridButton {
+          text: "Open Directory";
+          enabled: root.buttons-enabled;
+          clicked => { root.output_path_button_clicked() }
+        }
+        if (output-path != "") : PathLabel {
+          text: output-path;
+        }
       }
-
-      padding-bottom: 20px;
     }
 
     if (info-message != "") : InfoText {
