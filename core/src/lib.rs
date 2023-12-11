@@ -3,5 +3,3 @@ pub mod hasher;
 
 mod report;
 pub mod report_type;
-
-pub mod ui_message;

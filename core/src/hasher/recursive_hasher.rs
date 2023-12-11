@@ -35,9 +35,9 @@ impl RecursiveHasher {
         }
     }
 
-    pub fn process(mut self, path_string: String) -> Self {
+    pub async fn process(mut self, path_string: String) {
         self.process_path_recursively(path_string);
-        self
+        self.wait_for_completion().await;
     }
 
     fn process_path_recursively(&mut self, path_string: String) {
@@ -88,7 +88,7 @@ impl RecursiveHasher {
         self.join_set.spawn(handle);
     }
 
-    pub async fn wait_for_completion(&mut self) {
+    async fn wait_for_completion(&mut self) {
         debug!("Waiting for all hasher threads to complete.");
 
         while (self.join_set.join_next().await).is_some() {}

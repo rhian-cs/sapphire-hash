@@ -4,7 +4,6 @@ use std::sync::mpsc;
 use log::debug;
 
 use crate::report_type::ReportType;
-use crate::ui_message::UiMessage;
 
 use self::output::{report_output_for, ReportOutput};
 use self::report_entry::ReportEntry;
@@ -19,30 +18,29 @@ pub struct Report {
     entries: BTreeMap<String, ReportEntry>,
     receiver: mpsc::Receiver<ReportMessage>,
     report_output: Box<dyn ReportOutput>,
-    ui_sender: mpsc::Sender<UiMessage>,
 }
 
 impl Report {
-    pub fn new(
-        ui_sender: mpsc::Sender<UiMessage>,
+    pub fn spawn(
         report_receiver: mpsc::Receiver<ReportMessage>,
         report_type: ReportType,
-    ) -> Self {
-        Report {
-            entries: BTreeMap::new(),
-            receiver: report_receiver,
-            report_output: report_output_for(report_type),
-            ui_sender,
-        }
+    ) -> tokio::task::JoinHandle<i32> {
+        tokio::spawn(async move {
+            let mut report = Report {
+                entries: BTreeMap::new(),
+                receiver: report_receiver,
+                report_output: report_output_for(report_type),
+            };
+
+            let processed_files_count = report.receive_entries();
+            report.output_report();
+
+            processed_files_count
+        })
     }
 
-    pub fn process_entries(mut self) {
-        self.receive_entries();
-        self.output_report();
-    }
-
-    fn receive_entries(&mut self) {
-        let mut count = 0;
+    fn receive_entries(&mut self) -> i32 {
+        let mut processed_files_count = 0;
 
         for entry in self.receiver.iter() {
             debug!("Received entry {:?}.", entry);
@@ -52,7 +50,7 @@ impl Report {
                     let path = entry.path.clone();
 
                     if entry.is_file() {
-                        count += 1;
+                        processed_files_count += 1;
                     }
 
                     self.entries.insert(path, entry);
@@ -61,7 +59,7 @@ impl Report {
             }
         }
 
-        self.ui_sender.send(UiMessage::ReporterFinish(count)).unwrap();
+        processed_files_count
     }
 
     fn output_report(self) {
