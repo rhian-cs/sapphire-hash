@@ -1,71 +1,70 @@
-import { Button , ComboBox} from "std-widgets.slint";
+import { Button , ComboBox } from "std-widgets.slint";
+import { InfoText } from "components/info_text.slint";
+import { GridLabel } from "components/grid_label.slint";
+import { GridButton } from "components/grid_button.slint";
 
-component MyLabel inherits HorizontalLayout {
-  in property <string> text;
-
-  padding: 15px;
-  Text {
-    text: text;
-    horizontal-alignment: right;
-    vertical-alignment: center;
-  }
-}
-
-export component MainWindow {
+export component MainWindow inherits Window {
   callback input_path_button_clicked();
   callback output_path_button_clicked();
   callback calculate_button_clicked();
 
-  in-out property <string> error-message;
   in-out property <string> input-path;
   in-out property <string> output-path;
+
   in-out property <bool> buttons-enabled: true;
+
+  in-out property <string> info-message;
+  in-out property <string> error-message;
+
+  title: "Recursive Hash Calculator";
 
   VerticalLayout {
     padding: 20px;
+    alignment: center;
 
-    Text {
-      text: "Recursive Hash Calculator";
-      horizontal-alignment: center;
-      font-weight: 600;
-      font-size: 16px;
-      padding-bottom: 20px;
-    }
+    HorizontalLayout {
+      alignment: center;
 
-    GridLayout {
-      padding-bottom: 20px;
-
-      Row {
-        MyLabel { text: "Calculate Hashes For"; }
-        Button {
-          text: "Open Directory";
-          enabled: root.buttons-enabled;
-          clicked => { root.input_path_button_clicked() }
-        }
-      }
-
-      Row {
-        MyLabel { text: "Save CSV Output To"; }
-        Button {
-          text: "Open Directory";
-          enabled: root.buttons-enabled;
-          clicked => { root.output_path_button_clicked() }
-        }
+      GridLabel { text: "Calculate Hashes For"; }
+      GridButton {
+        text: "Open Directory";
+        enabled: root.buttons-enabled;
+        clicked => { root.input_path_button_clicked() }
       }
     }
 
-    if (error-message != "") : Text {
+    HorizontalLayout {
+      alignment: center;
+
+      GridLabel { text: "Save CSV Output To"; }
+      GridButton {
+        text: "Open Directory";
+        enabled: root.buttons-enabled;
+        clicked => { root.output_path_button_clicked() }
+      }
+
+      padding-bottom: 20px;
+    }
+
+    if (info-message != "") : InfoText {
+      text: info-message;
+    }
+
+    if (error-message != "") : InfoText {
       text: error-message;
-      font-size: 14px;
       color: red;
-      horizontal-alignment: center;
-      vertical-alignment: center;
     }
 
-    Button {
-      text: "Calculate";
-      enabled: root.buttons-enabled;
-      clicked => { root.calculate_button_clicked() }
+    HorizontalLayout {
+      alignment: center;
+
+      Button {
+        text: "Calculate";
+        enabled: root.buttons-enabled;
+        clicked => { root.calculate_button_clicked() }
+        height: 48px;
+        width: 340px;
+      }
     }
   }
 }

@@ -1,0 +1,13 @@
+export component GridLabel inherits HorizontalLayout {
+  in property <string> text;
+
+  padding: 15px;
+
+  Text {
+    text: text;
+    horizontal-alignment: right;
+    vertical-alignment: center;
+    width: 140px;
+    horizontal-stretch: 0;
+  }
+}
