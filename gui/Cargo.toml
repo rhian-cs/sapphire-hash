@@ -1,0 +1,14 @@
+[package]
+name = "recursive-hash-calculator-gui"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+recursive-hash-calculator-core = { path = "../core" }
+
+slint = "1.3.2"
+
+[build-dependencies]
+slint-build = "1.0"

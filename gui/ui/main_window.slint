@@ -1,0 +1,58 @@
+import { Button , ComboBox} from "std-widgets.slint";
+
+component MyLabel inherits HorizontalLayout {
+  in property <string> text;
+
+  padding: 15px;
+  Text {
+    text: text;
+    horizontal-alignment: right;
+    vertical-alignment: center;
+  }
+}
+
+export component MainWindow {
+  preferred-width: 240px;
+  preferred-height: 360px;
+
+  callback input_path_button_clicked();
+  callback output_path_button_clicked();
+  callback calculate_button_clicked();
+
+  VerticalLayout {
+    padding: 20px;
+
+    Text {
+      text: "Recursive Hash Calculator";
+      horizontal-alignment: center;
+      font-weight: 600;
+      font-size: 18px;
+      padding-bottom: 20px;
+    }
+
+    GridLayout {
+      padding-bottom: 20px;
+
+      Row {
+        MyLabel { text: "Calculate Hashes For"; }
+        Button {
+          text: "Open File or Directory";
+          clicked => { root.input_path_button_clicked() }
+        }
+      }
+
+      Row {
+        MyLabel { text: "Save CSV Output To"; }
+        Button {
+          text: "Open Directory";
+          clicked => { root.output_path_button_clicked() }
+        }
+      }
+    }
+
+    Button {
+      text: "Calculate";
+      clicked => { root.calculate_button_clicked() }
+    }
+  }
+}

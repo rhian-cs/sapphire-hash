@@ -1,6 +1,8 @@
 [workspace]
 
-members = ['core', "cli"]
+members = ["core", "cli", "gui"]
 
 # TODO: Better understand resolvers: https://doc.rust-lang.org/cargo/reference/resolver.html
 resolver = "1"
+
+default-members = ["gui"]
