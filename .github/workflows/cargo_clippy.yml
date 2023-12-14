@@ -9,6 +9,7 @@ on:
 
 # Make sure CI fails on all warnings, including Clippy lints
 env:
+  CARGO_TERM_COLOR: always
   RUSTFLAGS: "-Dwarnings"
 
 jobs:
@@ -16,5 +17,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - run: .github/scripts/setup.sh
       - name: Run Clippy
         run: cargo clippy --all-targets --all-features

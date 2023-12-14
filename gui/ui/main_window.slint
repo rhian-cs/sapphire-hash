@@ -1,0 +1,128 @@
+import { Button, VerticalBox, StandardListView , ProgressIndicator} from "std-widgets.slint";
+import { InfoText } from "components/info_text.slint";
+import { GridLabel } from "components/grid_label.slint";
+import { GridButton } from "components/grid_button.slint";
+import { PathLabel } from "components/path_label.slint";
+
+export component MainWindow inherits Window {
+  callback input_path_button_clicked();
+  callback output_path_button_clicked();
+  callback calculate_button_clicked();
+
+  in-out property <string> input-path;
+  in-out property <string> output-path;
+  in-out property <string> hash-algorithm: "md5";
+
+  in-out property <bool> is-processing;
+  in-out property <string> calculate-button-text: "Calculate";
+
+  in-out property <string> info-message;
+  in-out property <string> error-message;
+
+  title: "Recursive Hash Calculator";
+
+  VerticalLayout {
+    padding: 20px;
+    alignment: center;
+
+    HorizontalLayout {
+      alignment: center;
+      padding-bottom: 10px;
+
+      GridLabel { text: "Calculate Hashes For"; }
+      VerticalLayout {
+        GridButton {
+          text: "Open Directory";
+          enabled: !root.is-processing;
+          clicked => { root.input_path_button_clicked() }
+        }
+        if (input-path != "") : PathLabel {
+          text: input-path;
+        }
+      }
+    }
+
+    HorizontalLayout {
+      alignment: center;
+      padding-bottom: 10px;
+
+      GridLabel { text: "Save CSV Output To"; }
+      VerticalLayout {
+        GridButton {
+          text: "Open Directory";
+          enabled: !root.is-processing;
+          clicked => { root.output_path_button_clicked() }
+        }
+        if (output-path != "") : PathLabel {
+          text: output-path;
+        }
+      }
+    }
+
+    HorizontalLayout {
+      alignment: center;
+      padding-bottom: 20px;
+
+      GridLabel { text: "Hash Algorithm"; }
+      StandardListView {
+        width: 170px;
+        height: 100px;
+
+        current-item: 0;
+
+        model: [
+          { text: "MD5" },
+          { text: "RIPEMD160" },
+          { text: "SHA1" },
+          { text: "SHA224" },
+          { text: "SHA256" },
+          { text: "SHA384" },
+          { text: "SHA512" },
+          { text: "SHA3_224" },
+          { text: "SHA3_256" },
+          { text: "SHA3_384" },
+          { text: "SHA3_512" },
+          { text: "SHAKE128" },
+          { text: "SHAKE256" },
+          { text: "SM3" },
+        ];
+
+        current-item-changed(index) => {
+          root.hash-algorithm = self.model[index].text;
+        }
+      }
+    }
+
+    if (info-message != "") : InfoText {
+      text: info-message;
+    }
+
+    if (error-message != "") : InfoText {
+      text: error-message;
+      color: red;
+    }
+
+    if (root.is-processing): HorizontalLayout {
+      alignment: center;
+      padding-bottom: 10px;
+
+      ProgressIndicator {
+        width: 340px;
+        height: 5px;
+        indeterminate: true;
+      }
+    }
+
+    HorizontalLayout {
+      alignment: center;
+
+      Button {
+        text: root.calculate-button-text;
+        enabled: !root.is-processing;
+        clicked => { root.calculate_button_clicked() }
+        height: 48px;
+        width: 340px;
+      }
+    }
+  }
+}

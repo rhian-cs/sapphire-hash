@@ -8,11 +8,12 @@ recursive-hash-calculator-core = { path = "../core" }
 
 ## Async Runtime ##
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
-clap = { version = "^4", features = ["derive"] }                    # CLI Argument Parser
 
 ## Logging ##
 env_logger = "0.10.0" # Logger with support for environment variables
 log = "0.4.20"        # Logger backbone
 
 ## Utilities ##
-thiserror = "1.0.50" # Custom Errors
+clap = { version = "^4", features = ["derive"] } # CLI Argument Parser
+thiserror = "1.0.50"                             # Custom Errors
+spinoff = "0.8.0"                                # CLI Spinners
