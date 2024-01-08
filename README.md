@@ -46,6 +46,7 @@ RUST_LOG=trace recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | t
 ### Dependencies
 
 - Rust (https://rustup.rs/)
+- Build Tools (For Ubuntu install the `build-essential` package)
 - OpenSSL (For Ubuntu install the `libssl-dev` package)
 - [gui] GTK 3 (For Ubuntu install the `libgtk-3-dev` package)
 
