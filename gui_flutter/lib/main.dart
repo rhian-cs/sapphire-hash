@@ -35,8 +35,6 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
-
     return Scaffold(
       body: Center(
         child: Column(
@@ -80,19 +78,7 @@ class MyHomePage extends StatelessWidget {
                   width: 150,
                   child: Text('Hash Algorithm:'),
                 ),
-                DropdownButton(
-                  value: appState.selectedAlgorithm,
-                  onChanged: (String? value) {
-                    appState.selectAlgorithm(value!);
-                  },
-                  items: appState.hashAlgorithms
-                      .map<DropdownMenuItem<String>>((algorithmName) {
-                    return DropdownMenuItem(
-                      value: algorithmName,
-                      child: Text(algorithmName),
-                    );
-                  }).toList(),
-                )
+                HashAlgorithmDropdownMenu()
               ],
             ),
             const SizedBox(height: 10),
@@ -108,6 +94,27 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class HashAlgorithmDropdownMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    var appState = context.watch<MyAppState>();
+
+    return DropdownButton(
+      value: appState.selectedAlgorithm,
+      onChanged: (String? value) {
+        appState.selectAlgorithm(value!);
+      },
+      items: appState.hashAlgorithms
+          .map<DropdownMenuItem<String>>((algorithmName) {
+        return DropdownMenuItem(
+          value: algorithmName,
+          child: Text(algorithmName),
+        );
+      }).toList(),
     );
   }
 }
