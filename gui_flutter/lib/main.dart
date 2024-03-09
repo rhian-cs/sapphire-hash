@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -47,12 +48,7 @@ class MyHomePage extends StatelessWidget {
                   width: 150,
                   child: Text('Calculate hashes for:'),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    print("You've pressed the button!");
-                  },
-                  child: const Text('Open Directory'),
-                ),
+                DirectoryPickerButton(),
               ],
             ),
             const SizedBox(height: 5),
@@ -63,12 +59,7 @@ class MyHomePage extends StatelessWidget {
                   width: 150,
                   child: Text('Save CSV output to:'),
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    print("You've pressed the button!");
-                  },
-                  child: const Text('Open Directory'),
-                ),
+                DirectoryPickerButton(),
               ],
             ),
             Row(
@@ -94,6 +85,23 @@ class MyHomePage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class DirectoryPickerButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: () async {
+        String? selectedDirectory =
+            await FilePicker.platform.getDirectoryPath();
+
+        if (selectedDirectory != null) {
+          print("Directory picked: $selectedDirectory");
+        }
+      },
+      child: const Text('Choose Directory'),
     );
   }
 }
