@@ -96,3 +96,11 @@ Run:
 ```sh
 RUSTFLAGS=-Dwarnings cargo clippy --all-targets --all-features
 ```
+
+### GUI Development
+
+Whenever you update the `flutter_bridge` project, be sure to run the codegen so that the Flutter project picks up the changes. Inside `gui_flutter`, run:
+
+```sh
+flutter_rust_bridge_codegen generate
+```

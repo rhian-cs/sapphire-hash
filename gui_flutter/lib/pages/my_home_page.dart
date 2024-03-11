@@ -20,9 +20,10 @@ class MyHomePage extends StatelessWidget {
             outputDirectoryLabel     outputDirectoryButton
             hashAlgorithmSelectLabel hashAlgorithmSelectDropdown
             submitButton             submitButton
+            message                  message
           ''',
           columnSizes: [150.px, 160.px],
-          rowSizes: [40.px, 40.px, 40.px, 40.px],
+          rowSizes: [40.px, 40.px, 40.px, 40.px, 100.px],
           rowGap: 10,
           children: [
             const Text('Calculate hashes for:')
@@ -52,6 +53,7 @@ class MyHomePage extends StatelessWidget {
                 child: const Text('Calculate'),
               ),
             ).inGridArea('submitButton'),
+            Text(appState.message).inGridArea('message')
           ],
         ),
       ),
