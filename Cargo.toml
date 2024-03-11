@@ -1,6 +1,6 @@
 [workspace]
 
-members = ["core", "cli", "gui"]
+members = ["core", "cli", "gui", "flutter_bridge"]
 
 # TODO: Better understand resolvers: https://doc.rust-lang.org/cargo/reference/resolver.html
 resolver = "1"
