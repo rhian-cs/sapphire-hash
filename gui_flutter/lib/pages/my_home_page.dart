@@ -22,7 +22,7 @@ class MyHomePage extends StatelessWidget {
             submitButton             submitButton
             message                  message
           ''',
-          columnSizes: [150.px, 160.px],
+          columnSizes: [150.px, 200.px],
           rowSizes: [40.px, 40.px, 40.px, 40.px, 100.px],
           rowGap: 10,
           children: [
