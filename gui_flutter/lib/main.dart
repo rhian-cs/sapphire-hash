@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:hash_calculator/my_app_state.dart';
 import 'package:hash_calculator/pages/my_home_page.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +19,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => MyAppState(),
       child: MaterialApp(
+        builder: FToastBuilder(),
         title: 'Hash Calculator',
         theme: ThemeData(
           brightness: Brightness.light,
@@ -28,7 +30,7 @@ class MyApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         themeMode: ThemeMode.dark,
-        home: const MyHomePage(),
+        home: MyHomePage(),
       ),
     );
   }

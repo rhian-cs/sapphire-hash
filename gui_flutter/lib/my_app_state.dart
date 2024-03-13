@@ -4,10 +4,10 @@ import 'package:hash_calculator/rust/api/hasher.dart';
 class MyAppState extends ChangeNotifier {
   String? _inputDirectory;
   String? _outputDirectory;
-  String message = "Click to see results.";
 
   List<String> hashAlgorithms = ['SHA256', 'MD5', 'SHA1'];
   String selectedAlgorithm = '';
+  bool isProcessing = false;
 
   MyAppState() {
     selectedAlgorithm = hashAlgorithms.first;
@@ -28,33 +28,32 @@ class MyAppState extends ChangeNotifier {
     notifyListeners();
   }
 
-  void calculateHashes() {
+  void calculateHashes({required Function(String) onNotify}) {
     if (_inputDirectory == null) {
-      message = "Please choose an input directory.";
-      notifyListeners();
+      onNotify("Please choose an input directory.");
       return;
     }
 
     if (_outputDirectory == null) {
-      message = "Please choose an output directory.";
-      notifyListeners();
+      onNotify("Please choose an output directory.");
       return;
     }
 
-    var result = hasherProcess(
+    hasherProcess(
       directory: _inputDirectory!,
       hashAlgorithm: selectedAlgorithm.toLowerCase(),
       csvOutputDirectory: _outputDirectory!,
-    );
-
-    message = "Now processing...";
-
-    notifyListeners();
-
-    result.then((value) {
-      message =
-          "${value.processedFilesCount} files were processed. Took ${value.elapsedTimeSecs} seconds.";
+    ).then((value) {
+      onNotify("${value.processedFilesCount} files were processed.\n\n"
+          "Files were saved to:\n"
+          "$_outputDirectory\n\n"
+          "Took ${value.elapsedTimeSecs.toStringAsFixed(2)} seconds.");
+    }).whenComplete(() {
+      isProcessing = false;
       notifyListeners();
     });
+
+    isProcessing = true;
+    notifyListeners();
   }
 }

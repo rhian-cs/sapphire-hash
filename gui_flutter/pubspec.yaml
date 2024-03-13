@@ -40,6 +40,7 @@ dependencies:
   rust_lib_hash_calculator:
     path: rust_builder
   flutter_rust_bridge: 2.0.0-dev.28
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:
