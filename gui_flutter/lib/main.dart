@@ -5,10 +5,28 @@ import 'package:hash_calculator/pages/my_home_page.dart';
 import 'package:provider/provider.dart';
 
 import 'package:hash_calculator/rust/frb_generated.dart';
+import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
   await RustLib.init();
+  await initializeWindow();
+
   runApp(const MyApp());
+}
+
+Future<void> initializeWindow() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await windowManager.ensureInitialized();
+
+  WindowOptions windowOptions = const WindowOptions(
+    minimumSize: Size(400, 240),
+    size: Size(480, 480),
+  );
+
+  windowManager.waitUntilReadyToShow(windowOptions, () async {
+    await windowManager.show();
+    await windowManager.focus();
+  });
 }
 
 class MyApp extends StatelessWidget {

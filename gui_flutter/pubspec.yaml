@@ -41,6 +41,7 @@ dependencies:
     path: rust_builder
   flutter_rust_bridge: 2.0.0-dev.28
   fluttertoast: ^8.2.4
+  window_manager: ^0.3.8
 
 dev_dependencies:
   flutter_test:
