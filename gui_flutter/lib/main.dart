@@ -3,7 +3,7 @@ import 'package:hash_calculator/my_app_state.dart';
 import 'package:hash_calculator/pages/my_home_page.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hash_calculator/src/rust/frb_generated.dart';
+import 'package:hash_calculator/rust/frb_generated.dart';
 
 Future<void> main() async {
   await RustLib.init();

@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:hash_calculator/main.dart';
-import 'package:hash_calculator/src/rust/frb_generated.dart';
+import 'package:hash_calculator/rust/frb_generated.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {

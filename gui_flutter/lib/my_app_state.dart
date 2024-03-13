@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hash_calculator/src/rust/api/hasher.dart';
+import 'package:hash_calculator/rust/api/hasher.dart';
 
 class MyAppState extends ChangeNotifier {
   String? _inputDirectory;
