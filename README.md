@@ -48,6 +48,7 @@ RUST_LOG=trace recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | t
 - Rust (https://rustup.rs/)
 - Build Tools (For Ubuntu install the `build-essential` package)
 - OpenSSL (For Ubuntu install the `libssl-dev` package)
+- Flutter and other native dependencies for GUI development (see [flutter_gui/README.md](flutter_gui/README.md))
 
 ### Setup
 
@@ -104,3 +105,5 @@ Whenever you update the `flutter_bridge` project, be sure to run the codegen so 
 ```sh
 flutter_rust_bridge_codegen generate
 ```
+
+See more about GUI development in [flutter_gui/README.md](flutter_gui/README.md)
