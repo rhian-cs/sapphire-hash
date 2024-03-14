@@ -8,8 +8,8 @@ import 'package:hash_calculator/rust/frb_generated.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {
-  await RustLib.init();
   await initializeWindow();
+  await RustLib.init();
 
   runApp(const MyApp());
 }
@@ -19,8 +19,7 @@ Future<void> initializeWindow() async {
   await windowManager.ensureInitialized();
 
   WindowOptions windowOptions = const WindowOptions(
-    minimumSize: Size(400, 240),
-    size: Size(480, 480),
+    size: Size(640, 480),
   );
 
   windowManager.waitUntilReadyToShow(windowOptions, () async {
