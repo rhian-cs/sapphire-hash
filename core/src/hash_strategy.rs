@@ -4,8 +4,9 @@ use strum::EnumString;
 use openssl::error::ErrorStack as OpenSSLErrorStack;
 use openssl::hash::Hasher as OpenSSLHasher;
 use openssl::hash::MessageDigest;
+use strum::EnumVariantNames;
 
-#[derive(Clone, Copy, PartialEq, Debug, EnumString, Display)]
+#[derive(Clone, Copy, PartialEq, Debug, EnumString, Display, EnumVariantNames)]
 #[strum(serialize_all = "lowercase")]
 pub enum HashStrategy {
     Md5,

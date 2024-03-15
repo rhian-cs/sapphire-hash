@@ -5,11 +5,12 @@ class MyAppState extends ChangeNotifier {
   String? _inputDirectory;
   String? _outputDirectory;
 
-  List<String> hashAlgorithms = ['SHA256', 'MD5', 'SHA1'];
+  List<String> hashAlgorithms = [];
   String selectedAlgorithm = '';
   bool isProcessing = false;
 
   MyAppState() {
+    hashAlgorithms = availableHashingAlgorithms();
     selectedAlgorithm = hashAlgorithms.first;
   }
 

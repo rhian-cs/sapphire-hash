@@ -1,6 +1,7 @@
 use std::str::FromStr;
 
 use recursive_hash_calculator_core::{hash_strategy::HashStrategy, hasher, report_type::ReportType};
+use strum::VariantNames;
 
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
@@ -31,4 +32,36 @@ pub async fn hasher_process(
 
 fn csv_output_filename(csv_output_directory: String) -> String {
     format!("{csv_output_directory}/output.csv")
+}
+
+#[flutter_rust_bridge::frb(sync)] // Synchronous mode for simplicity of the demo
+pub fn available_hashing_algorithms() -> Vec<String> {
+    HashStrategy::VARIANTS.into_iter().map(|v| v.to_uppercase()).collect()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn available_hashing_algorithms_returns_string_options() {
+        let expected_hashing_algorithms = [
+            "MD5",
+            "SHA1",
+            "SHA224",
+            "SHA256",
+            "SHA384",
+            "SHA512",
+            "SHA3_224",
+            "SHA3_256",
+            "SHA3_384",
+            "SHA3_512",
+            "SHAKE128",
+            "SHAKE256",
+            "RIPEMD160",
+            "SM3",
+        ];
+
+        assert_eq!(available_hashing_algorithms(), expected_hashing_algorithms);
+    }
 }

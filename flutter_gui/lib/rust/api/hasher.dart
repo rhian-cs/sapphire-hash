@@ -17,6 +17,9 @@ Future<CalculateHashesResult> hasherProcess(
         csvOutputDirectory: csvOutputDirectory,
         hint: hint);
 
+List<String> availableHashingAlgorithms({dynamic hint}) =>
+    RustLib.instance.api.availableHashingAlgorithms(hint: hint);
+
 class CalculateHashesResult {
   final double elapsedTimeSecs;
   final int processedFilesCount;

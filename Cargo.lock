@@ -730,6 +730,7 @@ version = "0.1.0"
 dependencies = [
  "flutter_rust_bridge",
  "recursive-hash-calculator-core",
+ "strum",
  "thiserror",
 ]
 
