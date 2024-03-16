@@ -108,3 +108,11 @@ flutter_rust_bridge_codegen generate
 ```
 
 See more about GUI development in [flutter_gui/README.md](flutter_gui/README.md)
+
+<!--
+### Publish Crate
+```sh
+cargo publish -p sapphire-hash-core
+cargo publish -p sapphire-hash
+```
+-->
