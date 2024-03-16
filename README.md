@@ -6,9 +6,9 @@
   </p>
 </div>
 
-| Command-line Tool                                                             | Graphical User Interface                                                      |
-| ----------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
-| <img alt="CLI Demo" src="./.github/assets/images/cli-demo.gif" width="512" /> | <img alt="GUI Demo" src="./.github/assets/images/gui-demo.png" width="512" /> |
+| Command-line Tool                                                                                                                                                             | Graphical User Interface                                                                                                                                                      |
+| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| <img alt="CLI Demo" src="https://raw.githubusercontent.com/rhian-cs/sapphire-hash/36c194e9a9e0df429a007ffd16c674543f54145a/.github/assets/images/cli-demo.gif" width="512" /> | <img alt="GUI Demo" src="https://raw.githubusercontent.com/rhian-cs/sapphire-hash/36c194e9a9e0df429a007ffd16c674543f54145a/.github/assets/images/gui-demo.png" width="512" /> |
 
 ## Usage (GUI)
 
