@@ -48,7 +48,7 @@ RUST_LOG=trace recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | t
 - Rust (https://rustup.rs/)
 - Build Tools (For Ubuntu install the `build-essential` package)
 - OpenSSL (For Ubuntu install the `libssl-dev` package)
-- [gui] GTK 3 (For Ubuntu install the `libgtk-3-dev` package)
+- Flutter and other native dependencies for GUI development (see [flutter_gui/README.md](flutter_gui/README.md))
 
 ### Setup
 
@@ -97,3 +97,13 @@ Run:
 ```sh
 RUSTFLAGS=-Dwarnings cargo clippy --all-targets --all-features
 ```
+
+### GUI Development
+
+Whenever you update the `flutter_bridge` project, be sure to run the codegen so that the Flutter project picks up the changes. Inside `gui_flutter`, run:
+
+```sh
+flutter_rust_bridge_codegen generate
+```
+
+See more about GUI development in [flutter_gui/README.md](flutter_gui/README.md)
