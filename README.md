@@ -1,5 +1,5 @@
 <div align="center">
-  <div><img src=".github/assets/images/SapphireHashLogo.png" width="100"></div>
+  <div><img src="https://raw.githubusercontent.com/rhian-cs/sapphire-hash/f213a83a36a834e54dffdb235d384fe0d1c83c40/.github/assets/images/SapphireHashLogo.png" width="100"></div>
   <h1>Sapphire Hash</h1>
 </div>
 
@@ -7,16 +7,22 @@ A recursive, performant hash calculator written in Rust!
 
 ## Usage
 
-Compile the app, and use:
+Install Rust and Cargo: https://rustup.rs/
+
+Install the app with:
 
 ```sh
-sapphire-hash --algorithm ALGORITHM DIRECTORY
+cargo install sapphire-hash
+```
+
+```sh
+sapphire-hash --algorithm <ALGORITHM> <DIRECTORY>
 ```
 
 Where:
 
-- `DIRECTORY` can be either the relative or the full path to the desired directory or file
-- `ALGORITHM` is the desired hash algorithm. You may choose one of the following:
+- `DIRECTORY` can be either the relative or the full path to the desired directory or file.
+- `ALGORITHM` is the desired hash algorithm. Only algorithms implemented by OpenSSL are available:
   - `md5`
   - `sha1`
   - `sha224`
@@ -31,6 +37,8 @@ Where:
   - `shake256`
   - `ripemd160`
   - `sm3`
+
+Optionally, you can add an `--output <OUTPUT_PATH>` to specify the output. End the file in `.csv` to generate a CSV report.
 
 ### Logging
 
