@@ -3,8 +3,14 @@ name = "sapphire-hash"
 version = "0.1.0"
 edition = "2021"
 
+description = "A recursive, performant file hash calculator."
+# homepage = "https://github.com/rhian-cs/sapphire-hash"
+license = "MIT"
+keywords = ["cryptography", "hash", "sha256", "openssl"]
+categories = ["command-line-utilities", "cryptography"]
+
 [dependencies]
-sapphire-hash-core = { path = "../core" }
+sapphire-hash-core = { version = "0.1.0", path = "../core" }
 
 ## Async Runtime ##
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
