@@ -15,6 +15,8 @@ Install the app with:
 cargo install sapphire-hash
 ```
 
+Run with:
+
 ```sh
 sapphire-hash --algorithm <ALGORITHM> <DIRECTORY>
 ```
