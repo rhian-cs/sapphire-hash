@@ -69,7 +69,7 @@ abstract class RustLibApi extends BaseApi {
   Future<CalculateHashesResult> hasherProcess(
       {required String directory,
       required String hashAlgorithm,
-      required String csvOutputDirectory,
+      required String csvOutputFilename,
       dynamic hint});
 
   Future<void> initApp({dynamic hint});
@@ -110,14 +110,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   Future<CalculateHashesResult> hasherProcess(
       {required String directory,
       required String hashAlgorithm,
-      required String csvOutputDirectory,
+      required String csvOutputFilename,
       dynamic hint}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_String(directory, serializer);
         sse_encode_String(hashAlgorithm, serializer);
-        sse_encode_String(csvOutputDirectory, serializer);
+        sse_encode_String(csvOutputFilename, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 2, port: port_);
       },
@@ -126,7 +126,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         decodeErrorData: null,
       ),
       constMeta: kHasherProcessConstMeta,
-      argValues: [directory, hashAlgorithm, csvOutputDirectory],
+      argValues: [directory, hashAlgorithm, csvOutputFilename],
       apiImpl: this,
       hint: hint,
     ));
@@ -134,7 +134,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   TaskConstMeta get kHasherProcessConstMeta => const TaskConstMeta(
         debugName: "hasher_process",
-        argNames: ["directory", "hashAlgorithm", "csvOutputDirectory"],
+        argNames: ["directory", "hashAlgorithm", "csvOutputFilename"],
       );
 
   @override

@@ -17,21 +17,16 @@ pub struct CalculateHashesResult {
 pub async fn hasher_process(
     directory: String,
     hash_algorithm: String,
-    csv_output_directory: String,
+    csv_output_filename: String,
 ) -> CalculateHashesResult {
     let hash_strategy = HashStrategy::from_str(&hash_algorithm).unwrap();
 
-    let csv_output_filename = csv_output_filename(csv_output_directory);
     let result = hasher::process(directory, hash_strategy, ReportType::Csv(csv_output_filename)).await;
 
     CalculateHashesResult {
         elapsed_time_secs: result.elapsed_time.as_secs_f32(),
         processed_files_count: result.processed_files_count,
     }
-}
-
-fn csv_output_filename(csv_output_directory: String) -> String {
-    format!("{csv_output_directory}/output.csv")
 }
 
 #[flutter_rust_bridge::frb(sync)] // Synchronous mode for simplicity of the demo

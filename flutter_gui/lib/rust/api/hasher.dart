@@ -9,12 +9,12 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 Future<CalculateHashesResult> hasherProcess(
         {required String directory,
         required String hashAlgorithm,
-        required String csvOutputDirectory,
+        required String csvOutputFilename,
         dynamic hint}) =>
     RustLib.instance.api.hasherProcess(
         directory: directory,
         hashAlgorithm: hashAlgorithm,
-        csvOutputDirectory: csvOutputDirectory,
+        csvOutputFilename: csvOutputFilename,
         hint: hint);
 
 List<String> availableHashingAlgorithms({dynamic hint}) =>

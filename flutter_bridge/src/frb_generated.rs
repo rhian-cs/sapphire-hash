@@ -80,7 +80,7 @@ fn wire_hasher_process_impl(
             let mut deserializer = flutter_rust_bridge::for_generated::SseDeserializer::new(message);
             let api_directory = <String>::sse_decode(&mut deserializer);
             let api_hash_algorithm = <String>::sse_decode(&mut deserializer);
-            let api_csv_output_directory = <String>::sse_decode(&mut deserializer);
+            let api_csv_output_filename = <String>::sse_decode(&mut deserializer);
             deserializer.end();
             move |context| async move {
                 transform_result_sse(
@@ -89,7 +89,7 @@ fn wire_hasher_process_impl(
                             crate::api::hasher::hasher_process(
                                 api_directory,
                                 api_hash_algorithm,
-                                api_csv_output_directory,
+                                api_csv_output_filename,
                             )
                             .await,
                         )

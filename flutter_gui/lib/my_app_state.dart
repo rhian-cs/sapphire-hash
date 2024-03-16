@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hash_calculator/rust/api/hasher.dart';
+import 'package:intl/intl.dart';
 
 class MyAppState extends ChangeNotifier {
   String? _inputDirectory;
   String? _outputDirectory;
+
+  final DateFormat _dateFormat = DateFormat('yyyy-MM-dd-HH-mm-ss');
 
   List<String> hashAlgorithms = [];
   String selectedAlgorithm = '';
@@ -40,14 +43,16 @@ class MyAppState extends ChangeNotifier {
       return;
     }
 
+    var csvOutputFilename = _csvOutputFilename(_outputDirectory!);
+
     hasherProcess(
       directory: _inputDirectory!,
       hashAlgorithm: selectedAlgorithm.toLowerCase(),
-      csvOutputDirectory: _outputDirectory!,
+      csvOutputFilename: csvOutputFilename,
     ).then((value) {
       onNotify("${value.processedFilesCount} files were processed.\n\n"
           "Files were saved to:\n"
-          "$_outputDirectory\n\n"
+          "$csvOutputFilename\n\n"
           "Took ${value.elapsedTimeSecs.toStringAsFixed(2)} seconds.");
     }).whenComplete(() {
       isProcessing = false;
@@ -56,5 +61,11 @@ class MyAppState extends ChangeNotifier {
 
     isProcessing = true;
     notifyListeners();
+  }
+
+  String _csvOutputFilename(String outputDirectory) {
+    String formattedTime = _dateFormat.format(DateTime.now());
+
+    return "$outputDirectory/hasher-report-$formattedTime-$selectedAlgorithm.csv";
   }
 }
