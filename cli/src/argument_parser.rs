@@ -2,7 +2,7 @@ use std::{io, path::Path};
 
 use clap::Parser;
 
-use recursive_hash_calculator_core::{hash_strategy::HashStrategy, report_type::ReportType};
+use sapphire_hash_core::{hash_strategy::HashStrategy, report_type::ReportType};
 use thiserror::Error;
 
 #[derive(Parser)]
@@ -66,7 +66,7 @@ fn parse_output_type(output_path: Option<String>) -> Result<ReportType, Argument
 
 #[cfg(test)]
 mod parse_output_type_tests {
-    use recursive_hash_calculator_core::report_type::ReportType;
+    use sapphire_hash_core::report_type::ReportType;
 
     use crate::argument_parser::parse_output_type;
 

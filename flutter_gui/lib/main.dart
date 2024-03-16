@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hash_calculator/my_app_state.dart';
-import 'package:hash_calculator/pages/my_home_page.dart';
+import 'package:sapphire_hash_gui/my_app_state.dart';
+import 'package:sapphire_hash_gui/pages/my_home_page.dart';
 import 'package:provider/provider.dart';
 
-import 'package:hash_calculator/rust/frb_generated.dart';
+import 'package:sapphire_hash_gui/rust/frb_generated.dart';
 import 'package:window_manager/window_manager.dart';
 
 Future<void> main() async {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_layout_grid/flutter_layout_grid.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:hash_calculator/components/calculate_button.dart';
-import 'package:hash_calculator/components/directory_picker_button.dart';
-import 'package:hash_calculator/components/hash_algorithm_dropdown_menu.dart';
-import 'package:hash_calculator/my_app_state.dart';
+import 'package:sapphire_hash_gui/components/calculate_button.dart';
+import 'package:sapphire_hash_gui/components/directory_picker_button.dart';
+import 'package:sapphire_hash_gui/components/hash_algorithm_dropdown_menu.dart';
+import 'package:sapphire_hash_gui/my_app_state.dart';
 import 'package:provider/provider.dart';
 
 class MyHomePage extends StatelessWidget {
