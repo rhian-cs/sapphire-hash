@@ -1,6 +1,6 @@
 use std::str::FromStr;
 
-use recursive_hash_calculator_core::{hash_strategy::HashStrategy, hasher, report_type::ReportType};
+use sapphire_hash_core::{hash_strategy::HashStrategy, hasher, report_type::ReportType};
 use strum::VariantNames;
 
 #[flutter_rust_bridge::frb(init)]

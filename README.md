@@ -1,15 +1,16 @@
-## Rust Hash Calculator
+<div align="center">
+  <div><img src=".github/assets/images/SapphireHashLogo.png" width="100"></div>
+  <h1>Sapphire Hash</h1>
+</div>
 
 A recursive, performant hash calculator written in Rust!
 
 ## Usage
 
-### Basic Usage
-
 Compile the app, and use:
 
 ```sh
-recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
+sapphire-hash --algorithm ALGORITHM DIRECTORY
 ```
 
 Where:

@@ -2,7 +2,7 @@ mod argument_parser;
 
 use argument_parser::{parse_cli_arguments, AppArgs, ArgumentError};
 use log::debug;
-use recursive_hash_calculator_core::hasher;
+use sapphire_hash_core::hasher;
 use spinoff::{spinners, Spinner};
 
 #[tokio::main(worker_threads = 10)]

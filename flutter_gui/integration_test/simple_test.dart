@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:hash_calculator/main.dart';
-import 'package:hash_calculator/rust/frb_generated.dart';
+import 'package:sapphire_hash_gui/main.dart';
+import 'package:sapphire_hash_gui/rust/frb_generated.dart';
 import 'package:integration_test/integration_test.dart';
 
 void main() {

@@ -1,10 +1,10 @@
 [package]
-name = "recursive-hash-calculator-cli"
+name = "sapphire-hash"
 version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-recursive-hash-calculator-core = { path = "../core" }
+sapphire-hash-core = { path = "../core" }
 
 ## Async Runtime ##
 tokio = { version = "1", features = ["rt-multi-thread", "macros"] }

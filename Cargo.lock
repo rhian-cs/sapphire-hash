@@ -670,32 +670,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "recursive-hash-calculator-cli"
-version = "0.1.0"
-dependencies = [
- "clap",
- "env_logger",
- "log",
- "recursive-hash-calculator-core",
- "spinoff",
- "thiserror",
- "tokio",
-]
-
-[[package]]
-name = "recursive-hash-calculator-core"
-version = "0.1.0"
-dependencies = [
- "csv",
- "hex",
- "log",
- "openssl",
- "openssl-sys",
- "strum",
- "tokio",
-]
-
-[[package]]
 name = "regex"
 version = "1.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -729,7 +703,7 @@ name = "rust_lib_hash_calculator"
 version = "0.1.0"
 dependencies = [
  "flutter_rust_bridge",
- "recursive-hash-calculator-core",
+ "sapphire-hash-core",
  "strum",
  "thiserror",
 ]
@@ -764,6 +738,32 @@ name = "ryu"
 version = "1.0.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f98d2aa92eebf49b69786be48e4477826b256916e84a57ff2a4f21923b48eb4c"
+
+[[package]]
+name = "sapphire-hash"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "env_logger",
+ "log",
+ "sapphire-hash-core",
+ "spinoff",
+ "thiserror",
+ "tokio",
+]
+
+[[package]]
+name = "sapphire-hash-core"
+version = "0.1.0"
+dependencies = [
+ "csv",
+ "hex",
+ "log",
+ "openssl",
+ "openssl-sys",
+ "strum",
+ "tokio",
+]
 
 [[package]]
 name = "serde"

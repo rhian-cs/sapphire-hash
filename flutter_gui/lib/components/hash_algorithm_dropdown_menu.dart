@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hash_calculator/my_app_state.dart';
+import 'package:sapphire_hash_gui/my_app_state.dart';
 import 'package:provider/provider.dart';
 
 class HashAlgorithmDropdownMenu extends StatelessWidget {

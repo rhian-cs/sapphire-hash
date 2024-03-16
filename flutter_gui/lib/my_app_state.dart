@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hash_calculator/rust/api/hasher.dart';
+import 'package:sapphire_hash_gui/rust/api/hasher.dart';
 import 'package:intl/intl.dart';
 
 class MyAppState extends ChangeNotifier {

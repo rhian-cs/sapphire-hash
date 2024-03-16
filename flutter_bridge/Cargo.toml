@@ -8,7 +8,7 @@ crate-type = ["cdylib", "staticlib"]
 
 [dependencies]
 flutter_rust_bridge = "=2.0.0-dev.28"
-recursive-hash-calculator-core = { path = "../core" }
+sapphire-hash-core = { path = "../core" }
 
 strum = { version = "*", features = ["derive"] } # Derive utilities for enums
 thiserror = "1.0.50"                             # Custom Errors
