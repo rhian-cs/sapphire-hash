@@ -8,7 +8,7 @@
 
 | Command-line Tool                                                             | Graphical User Interface                          |
 | ----------------------------------------------------------------------------- | ------------------------------------------------- |
-| <img alt="CLI Demo" src="./.github/assets/images/cli-demo.gif" width="768" /> | ![GUI Demo](./.github/assets/images/gui-demo.png) |
+| <img alt="CLI Demo" src="./.github/assets/images/cli-demo.gif" width="512" /> | <img alt="GUI Demo" src="./.github/assets/images/gui-demo.png" width="512" /> |
 
 ## Usage (GUI)
 
