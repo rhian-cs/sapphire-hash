@@ -6,7 +6,15 @@
   </p>
 </div>
 
-## Usage
+| Command-line Tool                                                             | Graphical User Interface                          |
+| ----------------------------------------------------------------------------- | ------------------------------------------------- |
+| <img alt="CLI Demo" src="./.github/assets/images/cli-demo.gif" width="768" /> | ![GUI Demo](./.github/assets/images/gui-demo.png) |
+
+## Usage (GUI)
+
+Download the app from the [releases page](https://github.com/rhian-cs/sapphire-hash/releases), extract it an run it.
+
+## Usage (CLI)
 
 Install Rust and Cargo: https://rustup.rs/
 
