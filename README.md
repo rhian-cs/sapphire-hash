@@ -1,9 +1,10 @@
 <div align="center">
   <div><img src="https://raw.githubusercontent.com/rhian-cs/sapphire-hash/f213a83a36a834e54dffdb235d384fe0d1c83c40/.github/assets/images/SapphireHashLogo.png" width="100"></div>
   <h1>Sapphire Hash</h1>
+  <p>
+    A recursive, performant hash calculator written in Rust!
+  </p>
 </div>
-
-A recursive, performant hash calculator written in Rust!
 
 ## Usage
 
