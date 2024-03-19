@@ -58,7 +58,7 @@ You may also enable logging by using the `RUST_LOG=trace` environment variable.
 If you want to pipe the results and log results to separate files, you may use:
 
 ```sh
-RUST_LOG=trace recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
+RUST_LOG=trace sapphire-hash --algorithm ALGORITHM DIRECTORY | tee result.txt 2>/dev/stdout | tee log.txt
 ```
 
 ## Development
@@ -79,7 +79,7 @@ Run `cargo build`.
 Use the app like so:
 
 ```sh
-./target/debug/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
+./target/debug/sapphire-hash --algorithm ALGORITHM DIRECTORY
 ```
 
 ### Building for Production
@@ -93,7 +93,7 @@ OPENSSL_STATIC=true cargo build --release
 Use the app like so:
 
 ```sh
-./target/release/recursive-hash-calculator-cli --algorithm ALGORITHM DIRECTORY
+./target/release/sapphire-hash --algorithm ALGORITHM DIRECTORY
 ```
 
 ### Running Automated Tests
