@@ -10,7 +10,7 @@
 You can install the build tools and other native dependencies in Ubuntu with:
 
 ```sh
-apt install cmake ninja-build clang pkg-config libgtk-3-dev
+apt install cmake ninja-build clang pkg-config libgtk-3-dev libstdc++-12-dev
 ```
 
 ### Running the App
