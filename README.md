@@ -66,13 +66,23 @@ RUST_LOG=trace sapphire-hash --algorithm ALGORITHM DIRECTORY | tee result.txt 2>
 ### Dependencies
 
 - Rust (https://rustup.rs/)
-- Build Tools (For Ubuntu install the `build-essential` package)
-- OpenSSL (For Ubuntu install the `libssl-dev` package)
+- Build Tools:
+  - Ubuntu: `build-essential`
+- OpenSSL:
+  - Ubuntu: `sudo apt install libssl-dev`
+  - Windows: Use [vcpkg](https://github.com/microsoft/vcpkg) and install by running: `vcpkg install openssl`
 - Flutter and other native dependencies for GUI development (see [flutter_gui/README.md](flutter_gui/README.md))
 
 ### Setup
 
 Clone the repository.
+
+If you're on Windows you might need to specify the path to OpenSSL using the `OPENSSL_DIR` environment variable. This is the path that has the `lib\` and `include\` folders. You can do this by running:
+
+```sh
+# Windows only
+$env:OPENSSL_DIR="C:\path_to_vckpg\packages\openssl_x64-windows"
+```
 
 Run `cargo build`.
 
