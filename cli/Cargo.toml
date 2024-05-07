@@ -4,7 +4,7 @@ version = "0.1.1"
 edition = "2021"
 
 description = "A recursive, performant file hash calculator."
-homepage = "https://github.com/rhian-cs/sapphire-hash"
+repository = "https://github.com/rhian-cs/sapphire-hash"
 license = "MIT"
 keywords = ["cryptography", "hash", "sha256", "openssl"]
 categories = ["command-line-utilities", "cryptography"]
