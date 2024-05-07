@@ -4,7 +4,7 @@ version = "0.1.1"
 edition = "2021"
 
 description = "The core of sapphire-hash."
-homepage = "https://github.com/rhian-cs/sapphire-hash"
+repository = "https://github.com/rhian-cs/sapphire-hash"
 license = "MIT"
 
 [dependencies]
