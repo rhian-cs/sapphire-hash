@@ -71,6 +71,7 @@ RUST_LOG=trace sapphire-hash --algorithm ALGORITHM DIRECTORY | tee result.txt 2>
 - OpenSSL:
   - Ubuntu: `sudo apt install libssl-dev`
   - Windows: Use [vcpkg](https://github.com/microsoft/vcpkg) and install by running: `vcpkg install openssl`
+  - MacOS: Install pkg-config: `brew install pkg-config`
 - Flutter and other native dependencies for GUI development (see [flutter_gui/README.md](flutter_gui/README.md))
 
 ### Setup
