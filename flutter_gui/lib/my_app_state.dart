@@ -13,8 +13,10 @@ class MyAppState extends ChangeNotifier {
   bool isProcessing = false;
 
   MyAppState() {
-    hashAlgorithms = availableHashingAlgorithms();
-    selectedAlgorithm = hashAlgorithms.first;
+    availableHashingAlgorithms().then((algorithms) {
+      hashAlgorithms = algorithms;
+      selectedAlgorithm = hashAlgorithms.first;
+    });
   }
 
   void selectAlgorithm(String algorithmName) {
