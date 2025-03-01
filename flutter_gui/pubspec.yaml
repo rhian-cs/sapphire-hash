@@ -39,7 +39,7 @@ dependencies:
   flutter_layout_grid: ^2.0.5
   rust_lib_hash_calculator:
     path: rust_builder
-  flutter_rust_bridge: 2.0.0-dev.28
+  flutter_rust_bridge: 2.8.0
   fluttertoast: ^8.2.4
   window_manager: ^0.3.8
   intl: ^0.19.0

@@ -38,6 +38,7 @@ Whenever you change the interface between the Rust core and the Flutter app (the
 Inside `flutter_gui/` (this directory), run:
 
 ```sh
+cargo install flutter_rust_bridge_codegen
 flutter_rust_bridge_codegen generate
 ```
 
