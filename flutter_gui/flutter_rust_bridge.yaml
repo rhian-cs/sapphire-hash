@@ -1,2 +1,3 @@
-rust_input: ../flutter_bridge/src/api/**/*.rs
+rust_input: crate::api
+rust_root: ../flutter_bridge/
 dart_output: lib/rust

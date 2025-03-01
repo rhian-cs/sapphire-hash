@@ -1,9 +1,10 @@
 use std::str::FromStr;
 
+use flutter_rust_bridge::frb;
 use sapphire_hash_core::{hash_strategy::HashStrategy, hasher, report_type::ReportType};
 use strum::VariantNames;
 
-#[flutter_rust_bridge::frb(init)]
+#[frb(init)]
 pub fn init_app() {
     // Default utilities - feel free to customize
     flutter_rust_bridge::setup_default_user_utils();
@@ -29,9 +30,8 @@ pub async fn hasher_process(
     }
 }
 
-#[flutter_rust_bridge::frb(sync)] // Synchronous mode for simplicity of the demo
 pub fn available_hashing_algorithms() -> Vec<String> {
-    HashStrategy::VARIANTS.into_iter().map(|v| v.to_uppercase()).collect()
+    HashStrategy::VARIANTS.iter().map(|v| v.to_uppercase()).collect()
 }
 
 #[cfg(test)]
