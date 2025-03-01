@@ -31,7 +31,7 @@ pub async fn hasher_process(
 }
 
 pub fn available_hashing_algorithms() -> Vec<String> {
-    HashStrategy::VARIANTS.into_iter().map(|v| v.to_uppercase()).collect()
+    HashStrategy::VARIANTS.iter().map(|v| v.to_uppercase()).collect()
 }
 
 #[cfg(test)]
