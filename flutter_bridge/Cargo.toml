@@ -12,3 +12,6 @@ sapphire-hash-core = { path = "../core" }
 
 strum = { version = "*", features = ["derive"] } # Derive utilities for enums
 thiserror = "1.0.50"                             # Custom Errors
+
+[lints.rust]
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(frb_expand)'] }
